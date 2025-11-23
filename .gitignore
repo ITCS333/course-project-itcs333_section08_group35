@@ -16,3 +16,7 @@ Ignore logs and temporary files
 
 *.log
 .DS_Store
+
+Keep any other entries that were in the remote version here.
+
+If the remote version was empty, just keep the above lines.
