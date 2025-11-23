@@ -1,0 +1,18 @@
+Ignore local environment specific files
+
+-------------------------------------
+
+Database configuration file should NOT be committed
+
+if it contains local or sensitive credentials.
+
+Instead, create a separate file (e.g., db.sample.php)
+
+with placeholders to commit.
+
+db.php
+
+Ignore logs and temporary files
+
+*.log
+.DS_Store
