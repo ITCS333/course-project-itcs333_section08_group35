@@ -13,6 +13,7 @@
 
 // --- Element Selections ---
 // TODO: Select the section for the assignment list ('#assignment-list-section').
+const listSection = document.getElementById("assignment-list-section")
 
 // --- Functions ---
 
@@ -25,6 +26,15 @@
  */
 function createAssignmentArticle(assignment) {
   // ... your implementation here ...
+  const article = document.createElement("article");
+  article.className = "assignment-details";
+  article.innerHTML = `
+    <h2>${assignment.title}</h2>
+    <p>Due: ${assignment.dueDate}</p>
+    <p>${assignment.description}</p>
+    <a href="details.html?id=${assignment.id}">View Details</a>
+  `;
+  return article;
 }
 
 /**
@@ -40,6 +50,28 @@ function createAssignmentArticle(assignment) {
  */
 async function loadAssignments() {
   // ... your implementation here ...
+  if (!listSection) {
+    console.error("Assignment list section not found !");
+  return;
+  }
+  try {
+    const response = await fetch('assignments.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const assignments = await response.json();
+    listSection.innerHTML = ""; 
+    assignments.forEach(assignment => {
+      const assignmentArticle = createAssignmentArticle(assignment);
+      listSection.appendChild(assignmentArticle);
+    });
+  } catch (error) {
+    console.error("Failed to load assignments:", error);
+    listSection.innerHTML = "<p>Error loading assignments. Please try again later.</p>";
+  }
+
+
 }
 
 // --- Initial Page Load ---
