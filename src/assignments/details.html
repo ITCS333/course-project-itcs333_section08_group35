@@ -16,11 +16,13 @@
 
     <!-- TODO: Link to your CSS framework or stylesheet. -->
     <link rel="stylesheet" href="styles.css">
+    <script src="details.js" defer></script>
+
 </head>
 <body>
     <!-- TODO: Create a 'header' with a main heading ('h1'). Use a dummy title like "Assignment 1: HTML Basics". -->
     <header>
-        <h1>Assignment 1: HTML Basics</h1>
+        <h1 id="assignment-title">Assignment 1: HTML Basics</h1>
     </header>
 
     <!-- TODO: Create the 'main' content area. -->
@@ -30,11 +32,11 @@
         <!-- TODO: Use an 'article' to display the main assignment information. -->
         <article class="assignment-content">
             <!-- TODO: Add a paragraph ('p') to display the due date, e.g., "Due: YYYY-MM-DD". -->
-            <p>Due: 2023-11-15</p>
+            <p id="assignment-due-date">Due: 2023-11-15</p>
             <!-- TODO: Add a sub-heading ('h2') "Description". -->
             <h2>Description</h2>
             <!-- TODO: Add a paragraph ('p') with dummy text for the assignment's detailed description. -->
-            <p>
+            <p id="assignment-description">
                 This assignment covers the basics of HTML structure, including elements, attributes, and semantic tags.
                  Students are expected to create a simple webpage using the learned concepts.
             </p>
@@ -42,7 +44,7 @@
             <!-- TODO: Add another sub-heading ('h2') "Attached Files & Links". -->
             <h2>Attached Files & Links</h2>
             <!-- TODO: Use an unordered list ('ul') to display the links. -->
-            <ul>
+            <ul id="assignment-files-list">
                 <!-- TODO: Add list items ('li') with anchor tags ('a') for each resource. Use dummy links for now. -->
                 <li><a href="#">assignment1-instructions.pdf</a></li>
                 <!-- Example: <li><a href="#">assignment-brief.pdf</a></li> -->
@@ -57,7 +59,7 @@
 
             <!-- Subsection 2.1: Existing Comments -->
             <!-- TODO: Add a container (like a 'div') for the list of comments. -->
-                <div class="comments-section">
+                <div id="comment-list">
                 <!-- TODO: Add 1-2 dummy comments to show the structure. -->
                  <!--dummy comments just for layout purpose and fun :D-->
                  <article class="comment">
@@ -82,8 +84,8 @@
                          - label 'for': "new-comment"
                          - textarea 'id': "new-comment", required -->
                          <div>
-                        <label for="new-comment">Your Comment:</label><br>
-                        <textarea id="new-comment" name="new-comment" rows="4" cols="50" required placeholder="Type your Comment Here: "></textarea>
+                        <label for="new-comment-text">Your Comment:</label><br>
+                        <textarea id="new-comment-text" rows="4" cols="50" required placeholder="Type your Comment Here: "></textarea>
                          </div>
                     
                     <!-- TODO: Add a 'button' to submit the comment.
