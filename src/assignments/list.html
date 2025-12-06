@@ -1,42 +1,38 @@
-<!--
-  Requirement: Create the Student View for Assignments
-
-  Instructions:
-  This page is a read-only view for students to see all course assignments.
-  Each assignment should link to its dedicated detail page.
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- TODO: Add meta tags for charset and viewport. -->
-    
-    <!-- TODO: Add a title, e.g., "Course Assignments". -->
-
-    <!-- TODO: Link to your CSS framework or stylesheet. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Assignments</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <h1>Course Assignments</h1>
+    </header>
+    <main>
+        <section id="assignment-list">
+            <article class="assignment-details"></article>
+                <h2>Assignment 1: HTML Basics</h2>
+                <p>Due: 2023-11-15</p>
+                <p>
+                    This assignment covers the basics of HTML structure, including elements, attributes, and semantic tags.
+                    Students are expected to create a simple webpage using the learned concepts.
+                </p>
+                <a href="assignment-detail.html">View Details & Discussion</a>
+            </article>
 
-    <!-- TODO: Create a 'header' with a main heading ('h1') "Course Assignments". -->
+            <article class="assignment-details">
+                <h2>Assignment 2: CSS Fundamentals</h2>
+                <p>Due: 2023-11-22</p>
+                <p>
+                    This assignment focuses on the fundamentals of CSS, including selectors, properties, and layout techniques.
+                    Students will style a webpage created in the previous assignment.
+                </p>
+                <a href="assignment-detail.html">View Details & Discussion</a>
 
-    <!-- TODO: Create the 'main' content area. -->
-        <!-- TODO: Create a 'section' to contain the list of assignments. -->
-            <!-- TODO: Add 2-3 dummy assignment entries using the structure below. -->
-
-            <!-- Example Assignment 1: -->
-            <!-- TODO: Use an 'article' element for each assignment. -->
-                <!-- TODO: Add a heading ('h2') for the assignment's title (e.g., "Assignment 1: HTML Basics"). -->
-                <!-- TODO: Add a paragraph ('p') to display the due date, e.g., "Due: YYYY-MM-DD". -->
-                <!-- TODO: Add another paragraph ('p') for a brief description. -->
-                <!-- TODO: Add an anchor tag ('a') that links to the detail page. 
-                     - For now, the 'href' can be "assignment-detail.html".
-                     - The link text should be "View Details & Discussion". -->
-            <!-- End of article. -->
-
-            <!-- Example Assignment 2: -->
-            <!-- TODO: Create a second 'article' for another assignment with the same structure. -->
-
-        <!-- End of assignment list section. -->
-    <!-- End of main. -->
+        </section>
+    </main>
 
 </body>
 </html>
