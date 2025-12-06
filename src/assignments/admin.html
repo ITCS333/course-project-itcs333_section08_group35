@@ -1,101 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- TODO: Add the 'meta' tag for character encoding (UTF-8). -->
     <meta charset="UTF-8">
-    
-    <!-- TODO: Add the responsive 'viewport' meta tag. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- TODO: Add a title, e.g., "Manage Assignments". -->
     <title>Manage Assignments</title>
 
-    <!-- TODO: Link to your CSS framework or stylesheet. -->
+    <!-- TODO: FrameWork not added !. -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <!-- TODO: Create a 'header' with a main heading ('h1') "Manage Assignments". -->
     <header>
         <h1>Manage Assignments</h1>
     </header>
-
-    <!-- TODO: Create the 'main' content area. -->
     <main>
-
-        <!-- Section 1: Add/Edit Assignment Form -->
-        <!-- TODO: Create a 'section' for the form. -->
+        <!-- Section 1: Create New Assignment Form -->
         <section id="create-assignment">
-            <!-- TODO: Add a sub-heading ('h2') "Add a New Assignment". -->
             <h2>Add a New Assignment</h2>
 
-            <!-- TODO: Create a 'form' with an id "assignment-form". Action can be '#'. -->
             <form id="assignment-form" action="#">
-                <!-- TODO: Use a 'fieldset' to group the form controls. -->
                 <fieldset>
-                    <!-- TODO: Add a 'legend', e.g., "Assignment Details". -->
                     <legend>Assignment Details</legend>
 
-                    <!-- TODO: Add a 'label' and 'input' for the assignment title. -->
                     <label for="assignment-title">Assignment Title:</label>
                     <input type="text" id="assignment-title" name="assignment-title" required>
                     <br><br>
 
-                    <!-- TODO: Add a 'label' and 'textarea' for the description. -->
                     <label for="assignment-description">Description:</label>
                     <textarea id="assignment-description" name="assignment-description" rows="5" required></textarea>
                     <br><br>
 
-                    <!-- TODO: Add a 'label' and 'input' for the due date. -->
                     <label for="assignment-due-date">Due Date:</label>
                     <input type="date" id="assignment-due-date" name="assignment-due-date" required>
                     <br><br>
                     
-                    <!-- TODO: Add a 'label' and 'textarea' for attached files or links (one per line). -->
                     <label for="assignment-files">Attached Files/Links (one per line):</label>
                     <textarea id="assignment-files" name="assignment-files" rows="3"></textarea>
                     <br><br>
 
-                    <!-- TODO: Add a 'button' to submit the form. -->
                     <button id="add-assignment" type="submit">Add Assignment</button>
+
                 </fieldset>
+
             <!-- End of form. -->
             </form>
+
         <!-- End of form section. -->
         </section>
 
         <!-- Section 2: Existing Assignments List -->
-        <!-- TODO: Create a 'section' to display the list of current assignments. -->
         <section id="current-assignments">
-            <!-- TODO: Add a sub-heading ('h2') "Current Assignments". -->
             <h2>Current Assignments</h2>
-
-            <!-- TODO: Create a 'table' with id "assignments-table". -->
             <table id="assignments-table" border="1">
-                <!-- TODO: Create a 'thead' and a 'tr' inside it. -->
                 <thead>
                     <tr>
-                        <!-- TODO: Add 'th' elements for "Title", "Due Date", and "Actions". -->
                         <th>Title</th>
                         <th>Due Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                
-                <!-- TODO: Create a 'tbody' for the data. -->
+            
                 <tbody>
                     <!-- Example Row 1: -->
-                    <!-- TODO: Create a 'tr' for the first assignment. -->
                     <tr>
-                        <!-- TODO: Add 'td' cells for a title (e.g., "HTML Basics") and a due date. -->
                         <td>HTML Basics</td>
                         <td>2023-11-15</td>
                         
-                        <!-- TODO: Add a 'td' containing the action buttons. -->
                         <td>
-                            <!-- TODO: Add an "Edit" button. -->
                             <button type="button" class="btn-edit">Edit</button>
-                            <!-- TODO: Add a "Delete" button. -->
                             <button type="button" class="btn-delete">Delete</button>
                         </td>
                     </tr>
