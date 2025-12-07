@@ -40,12 +40,22 @@
 // ============================================================================
 
 // TODO: Set Content-Type header to application/json
+header('Content-Type: application/json; charset=UTF-8');
 
 
 // TODO: Set CORS headers to allow cross-origin requests
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, DELETE');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Credentials: true');
 
 
 // TODO: Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 
 
@@ -53,27 +63,24 @@
 // DATABASE CONNECTION
 // ============================================================================
 
-// TODO: Include the database connection class
-
-
-// TODO: Create database connection
-
-
-// TODO: Set PDO to throw exceptions on errors
-
+try{
+    $pdo = new PDO('mysql:host=localhost;dbname=web_db;charset=utf8mb4', "root", "");
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'DB Connection Failed: ' . $e->getMessage()]);
+    exit();
+}
 
 
 // ============================================================================
 // REQUEST PARSING
 // ============================================================================
 
-// TODO: Get the HTTP request method
+$action = $_REQUEST['action'] ?? '';
+$id     = $_GET['id'] ?? null;
+$search = trim($_REQUEST['search'] ?? '');
+$input  = json_decode(file_get_contents('php://input'), true);
 
-
-// TODO: Get the request body for POST and PUT requests
-
-
-// TODO: Parse query parameters
 
 
 
