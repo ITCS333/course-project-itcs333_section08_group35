@@ -1,43 +1,59 @@
-<!--
-  Requirement: Create the Student View for the Weekly Breakdown
-
-  Instructions:
-  This page is a read-only view for students to see the plan for all weeks.
-  Each week should link to its dedicated detail page.
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- TODO: Add meta tags for charset and viewport. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- TODO: Add a title, e.g., "Weekly Course Breakdown". -->
+    <title>Weekly Course Breakdown</title>
 
     <!-- TODO: Link to your CSS framework or stylesheet. -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <!-- TODO: Create a 'header' with a main heading ('h1') "Weekly Course Breakdown". -->
+    <header>
+        <h1>Weekly Course Breakdown</h1>
+    </header>
 
     <!-- TODO: Create the 'main' content area. -->
+    <main>
         <!-- TODO: Create a 'section' to contain the list of weeks. -->
-            <!-- TODO: Add 2-3 dummy weekly entries using the structure below. -->
-
+        <section id="week-list">
+            
             <!-- Example Week 1: -->
             <!-- TODO: Use an 'article' element for each week to group its content semantically. -->
-                <!-- TODO: Add a heading ('h2') for the week's title (e.g., "Week 1: Introduction to HTML"). -->
-                <!-- TODO: Add a paragraph ('p') to display the start date, e.g., "Starts on: YYYY-MM-DD". -->
+            <article class="week-card">
+                <!-- TODO: Add a heading ('h2') for the week's title. -->
+                <h2>Week 1: Introduction to HTML</h2>
+                
+                <!-- TODO: Add a paragraph ('p') to display the start date. -->
+                <p>Starts on: 2023-10-01</p>
+                
                 <!-- TODO: Add a paragraph ('p') for a brief description of the week. -->
-                <!-- TODO: Add an anchor tag ('a') that links to the detail page. 
-                     - For now, the 'href' can be "week-detail.html".
-                     - The link text should be "View Details & Discussion". -->
+                <p>Learn the basics of the web, HTML5 document structure, semantic tags, and how to create your first webpage.</p>
+                
+                <!-- TODO: Add an anchor tag ('a') that links to the detail page. -->
+                <!-- Note: In a real app, you would likely append an ID like '?id=1' to the href. -->
+                <a href="details.html?id=1">View Details & Discussion</a>
+            </article>
             <!-- End of article. -->
 
             <!-- Example Week 2: -->
             <!-- TODO: Create a second 'article' for another week. -->
-                <!-- TODO: Add a heading, a paragraph for the start date, a paragraph for the description, and an anchor tag linking to "week-detail.html". -->
+            <article class="week-card">
+                <h2>Week 2: Introduction to CSS</h2>
+                <p>Starts on: 2023-10-08</p>
+                <p>Dive into styling your pages. Covers CSS selectors, the box model, colors, and basic layout techniques.</p>
+                <a href="details.html?id=2">View Details & Discussion</a>
+            </article>
             <!-- End of article. -->
 
+        </section>
         <!-- End of weekly list section. -->
+    </main>
     <!-- End of main. -->
 
 </body>
