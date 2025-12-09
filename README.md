@@ -15,7 +15,7 @@ Ahmed AbdulAmeer Ahmed Barakat 202308929
 ## A table indicating which student was responsible for which task.
 Task 4 - Ali Hasan Mohammed Hasan Alhayki
 
-Task 3 - Mohammed Abdulla Hassan Alaswad  
+Task 3 - Mohammed Abdulla Hassan AlAswad  
 
 Task 1 - Mohammed A.Aziz Almutawa
 
