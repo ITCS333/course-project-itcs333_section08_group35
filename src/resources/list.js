@@ -1,47 +1,51 @@
-/*
-  Requirement: Populate the "Course Resources" list page.
+const listSection = document.querySelector('#resource-list-section');
 
-  Instructions:
-  1. Link this file to `list.html` using:
-     <script src="list.js" defer></script>
-
-  2. In `list.html`, add an `id="resource-list-section"` to the
-     <section> element that will contain the resource articles.
-
-  3. Implement the TODOs below.
-*/
-
-// --- Element Selections ---
-// TODO: Select the section for the resource list ('#resource-list-section').
-
-// --- Functions ---
-
-/**
- * TODO: Implement the createResourceArticle function.
- * It takes one resource object {id, title, description}.
- * It should return an <article> element matching the structure in `list.html`.
- * The "View Resource & Discussion" link's `href` MUST be set to `details.html?id=${id}`.
- * (This is how the detail page will know which resource to load).
- */
 function createResourceArticle(resource) {
-  // ... your implementation here ...
+    const article = document.createElement('article');
+
+    const titleEl = document.createElement('h3');
+    titleEl.textContent = resource.title;
+    article.appendChild(titleEl);
+
+    const descEl = document.createElement('p');
+    descEl.textContent = resource.description;
+    article.appendChild(descEl);
+
+    const linkEl = document.createElement('a');
+    linkEl.textContent = 'View Details';
+    linkEl.href = `details.html?id=${resource.id}`;
+    linkEl.setAttribute('role', 'button');
+    article.appendChild(linkEl);
+
+    return article;
 }
 
-/**
- * TODO: Implement the loadResources function.
- * This function needs to be 'async'.
- * It should:
- * 1. Use `fetch()` to get data from 'resources.json'.
- * 2. Parse the JSON response into an array.
- * 3. Clear any existing content from `listSection`.
- * 4. Loop through the resources array. For each resource:
- * - Call `createResourceArticle()`.
- * - Append the returned <article> element to `listSection`.
- */
 async function loadResources() {
-  // ... your implementation here ...
+    try {
+        const response = await fetch('api/index.php');
+        const json = await response.json();
+
+        if (!json.success) {
+            throw new Error(json.message || 'Unable to retrieve materials');
+        }
+
+        const resources = json.data || [];
+
+        listSection.innerHTML = '';
+
+        if (resources.length === 0) {
+            listSection.innerHTML = '<p>No materials found.</p>';
+            return;
+        }
+
+        resources.forEach(resource => {
+            const article = createResourceArticle(resource);
+            listSection.appendChild(article);
+        });
+    } catch (error) {
+        console.error('Error loading resources:', error);
+        listSection.innerHTML = '<p>Cannot display materials at this time.</p>';
+    }
 }
 
-// --- Initial Page Load ---
-// Call the function to populate the page.
 loadResources();
