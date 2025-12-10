@@ -524,14 +524,22 @@ try {
     if ($method === 'GET') {
         // TODO: Handle GET requests
         
+        
         if ($resource === 'assignments') {
             // TODO: Check if 'id' query parameter exists
+            if ($id) {
+                getAssignmentById($pdo, $id);
+            } else {
+                getAllAssignments($pdo); }
             
         } elseif ($resource === 'comments') {
             // TODO: Check if 'assignment_id' query parameter exists
+            $assignmentId = $_GET['assignment_id'] ?? null;
+            getCommentsByAssignment($pdo, $assignmentId);
             
         } else {
             // TODO: Invalid resource, return 400 error
+            sendResponse(['status' => 'error', 'message' => 'Invalid resource'], 400);
             
         }
         
@@ -540,12 +548,15 @@ try {
         
         if ($resource === 'assignments') {
             // TODO: Call createAssignment($db, $data)
+             createAssignment($pdo, $input);
             
         } elseif ($resource === 'comments') {
             // TODO: Call createComment($db, $data)
+                createComment($pdo, $input);
             
         } else {
             // TODO: Invalid resource, return 400 error
+            sendResponse(['status' => 'error', 'message' => 'Invalid resource'], 400);
             
         }
         
@@ -554,9 +565,11 @@ try {
         
         if ($resource === 'assignments') {
             // TODO: Call updateAssignment($db, $data)
+            updateAssignment($pdo, $input);
             
         } else {
             // TODO: PUT not supported for other resources
+             sendResponse(['status' => 'error', 'message' => 'PUT not supported for this resource'], 405);
             
         }
         
@@ -565,25 +578,34 @@ try {
         
         if ($resource === 'assignments') {
             // TODO: Get 'id' from query parameter or request body
+            $delId = $_GET['id'] ?? null;
+            deleteAssignment($pdo, $delId);
             
         } elseif ($resource === 'comments') {
             // TODO: Get comment 'id' from query parameter
+            $delId = $_GET['id'] ?? null;
+            deleteComment($pdo, $delId);
             
         } else {
             // TODO: Invalid resource, return 400 error
+            sendResponse(['status' => 'error', 'message' => 'Invalid resource'], 400);
             
         }
         
     } else {
         // TODO: Method not supported
+        sendResponse(['status' => 'error', 'message' => 'Method Not Allowed'], 405);
         
     }
     
 } catch (PDOException $e) {
     // TODO: Handle database errors
+    sendResponse(['status' => 'error', 'message' => 'Database Error: ' . $e->getMessage()], 500);
+    
     
 } catch (Exception $e) {
     // TODO: Handle general errors
+    sendResponse(['status' => 'error', 'message' => 'Server Error: ' . $e->getMessage()], 500);
     
 }
 
@@ -600,15 +622,21 @@ try {
  */
 function sendResponse($data, $statusCode = 200) {
     // TODO: Set HTTP response code
+    http_response_code($statusCode);
     
     
     // TODO: Ensure data is an array
+    if (!is_array($data)) {
+        $data = ['data' => $data];
+    }
     
     
     // TODO: Echo JSON encoded data
+    echo json_encode($data);
     
     
     // TODO: Exit to prevent further execution
+    exit();
     
 }
 
@@ -621,15 +649,19 @@ function sendResponse($data, $statusCode = 200) {
  */
 function sanitizeInput($data) {
     // TODO: Trim whitespace from beginning and end
+    $data = trim($data);
     
     
     // TODO: Remove HTML and PHP tags
+    $data = strip_tags($data);
     
     
     // TODO: Convert special characters to HTML entities
+    $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
     
     
     // TODO: Return the sanitized data
+    return $data;
     
 }
 
@@ -642,9 +674,14 @@ function sanitizeInput($data) {
  */
 function validateDate($date) {
     // TODO: Use DateTime::createFromFormat to validate
+    $date = DateTime::createFromFormat('Y-m-d', $date);
+    if ($date && $date->format('Y-m-d') === $date) {
+        return true;
+    }
     
     
     // TODO: Return true if valid, false otherwise
+    return false;
     
 }
 
@@ -658,10 +695,10 @@ function validateDate($date) {
  */
 function validateAllowedValue($value, $allowedValues) {
     // TODO: Check if $value exists in $allowedValues array
-    
-    
+    if (in_array($value, $allowedValues)) {
     // TODO: Return the result
-    
+    return in_array($value, $allowedValues);
+    }
 }
 
 ?>
