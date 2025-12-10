@@ -7,57 +7,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- TODO: Add meta tags for charset and viewport. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- TODO: Add a title, for now use "Topic Details". -->
+    <title>Topic Details</title>
 
-    <!-- TODO: Link to your CSS framework or stylesheet. -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        article {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        footer {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        .actions a,
+        .actions button {
+            display: inline-block;
+            padding: 5px 15px;
+            margin-right: 5px;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .actions a {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .actions button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        legend {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <!-- TODO: Create a 'header' with a main heading ('h1'). Use a dummy title like "Question about CSS Flexbox". -->
+    <header>
+        <h1>Question about CSS Flexbox</h1>
+    </header>
 
-    <!-- TODO: Create the 'main' content area. -->
+    <main>
 
-        <!-- Section 1: Original Post -->
-        <!-- TODO: Use an 'article' to display the main topic post. Give it an 'id' like "original-post". -->
-            <!-- TODO: Add a paragraph ('p') with the dummy text of the original message. -->
-            <!-- TODO: Use a 'footer' for the metadata: "Posted by: Student Name on YYYY-MM-DD". -->
-            <!-- TODO: Add a container for "Edit" and "Delete" buttons, just like on the main page.
-                 Remember, these actions are restricted to the owner or admin. -->
-        <!-- End of article. -->
+        <article id="original-post">
+            <p>I can't get my items to space out evenly. I'm using `display: flex` but they are all bunched up. What am I missing?</p>
+            <footer>Posted by: Student Name on 2025-10-25</footer>
+            <div class="actions">
+                <a href="#">Edit</a>
+                <button>Delete</button>
+            </div>
+        </article>
 
-        <!-- Section 2: Replies -->
-        <!-- TODO: Create a 'section' for the replies, with an 'id' of "replies-section". -->
-            <!-- TODO: Add a sub-heading ('h2') "Replies". -->
+        <section id="replies-section">
+            <h2>Replies</h2>
 
-            <!-- TODO: Add a container (like a 'div') for the list of replies. -->
-                <!-- TODO: Add 1-2 dummy replies to show the structure. -->
+            <div>
+                <article>
+                    <p>Have you tried using 'justify-content: space-between'?</p>
+                    <footer>Posted by: Student Name on 2025-10-26</footer>
+                    <div class="actions">
+                        <a href="#">Edit</a>
+                        <button>Delete</button>
+                    </div>
+                </article>
 
-                <!-- Example Reply 1: -->
-                <!-- TODO: Use an 'article' for each reply. -->
-                    <!-- TODO: Use a 'p' for the reply text (e.g., "Have you tried using 'justify-content: space-between'?"). -->
-                    <!-- TODO: Use a 'footer' to show the author and date. -->
-                    <!-- TODO: Add a container for "Edit" and "Delete" buttons for this specific reply.
-                         These actions are restricted to the reply's author or the admin. -->
-                <!-- End of reply article. -->
+                <article>
+                    <p>You might also need to set a width on the flex container.</p>
+                    <footer>Posted by: Student Name on 2025-10-27</footer>
+                    <div class="actions">
+                        <a href="#">Edit</a>
+                        <button>Delete</button>
+                    </div>
+                </article>
+            </div>
+        </section>
 
-        <!-- Section 3: Add a Reply Form -->
-        <!-- TODO: Create a 'section' for the reply form. -->
-            <!-- TODO: Add a sub-heading ('h2') "Post a Reply". -->
-            <!-- TODO: Create a 'form' for users to post new replies. Action can be '#'. -->
-                <!-- TODO: Use a 'fieldset' to group the controls. -->
-                    <!-- TODO: Add a 'legend', e.g., "Your Reply". -->
+        <section>
+            <h2>Post a Reply</h2>
+            <form action="#">
+                <fieldset>
+                    <legend>Your Reply</legend>
 
-                    <!-- TODO: Add a 'label' and 'textarea' for the reply message.
-                         - label 'for': "new-reply"
-                         - textarea 'id': "new-reply", required -->
+                    <label for="new-reply">Reply Message</label>
+                    <textarea id="new-reply" rows="6" required></textarea>
                     
-                    <!-- TODO: Add a 'button' to submit the reply.
-                         - type="submit", Text: "Post Reply" -->
-                <!-- End of fieldset. -->
-            <!-- End of form. -->
-        <!-- End of replies section. -->
+                    <button type="submit">Post Reply</button>
+                </fieldset>
+            </form>
+        </section>
 
-    <!-- End of main. -->
+    </main>
 </body>
 </html>
