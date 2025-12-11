@@ -44,10 +44,9 @@ header('Content-Type: application/json; charset=UTF-8');
 
 
 // TODO: Set CORS headers to allow cross-origin requests
-header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, DELETE');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS'); // Added PUT and OPTIONS
+header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
 header('Access-Control-Allow-Credentials: true');
 
 
@@ -65,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 try{
     $pdo = new PDO('mysql:host=localhost;dbname=course;charset=utf8mb4', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Ensure exceptions are thrown
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'DB Connection Failed: ' . $e->getMessage()]);
@@ -75,6 +75,10 @@ try{
 // ============================================================================
 // REQUEST PARSING
 // ============================================================================
+
+// FIX: Define method and resource to avoid "Undefined variable" errors
+$method = $_SERVER['REQUEST_METHOD'];
+$resource = $_GET['resource'] ?? '';
 
 $action = $_REQUEST['action'] ?? '';
 $id     = $_GET['id'] ?? null;
@@ -100,10 +104,12 @@ $input  = json_decode(file_get_contents('php://input'), true);
  */
 function getAllAssignments($db) {
     $stmt = $db->prepare("SELECT * FROM assignments ORDER BY due_date");
+    $stmt->execute(); // Added execute call
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($data as &$row){
         $row['files'] = json_decode($row['files'], true);
     }
+    unset($row); // Break reference
 
     sendResponse($data);
 }
@@ -121,11 +127,13 @@ function getAllAssignments($db) {
  */
 function getAssignmentById($db, $assignmentId) {
     $stmt = $db->prepare("SELECT * FROM assignments WHERE id = ?");
-    $stmt->execute([$id]);
+    // FIX: Use the passed argument $assignmentId, not the global $id
+    $stmt->execute([$assignmentId]); 
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($data){
-        $data['files'] = json_decode($data['files'], );
+        // FIX: Added 'true' to json_decode and removed trailing comma
+        $data['files'] = json_decode($data['files'], true);
         sendResponse($data);
     } else {
         sendResponse(['status' => 'error', 'message' => 'Assignment not found'], 404);
@@ -194,16 +202,13 @@ function createAssignment($db, $data) {
             'title' => $title,
             'description' => $description,
             'due_date' => $due_date,
-            'files' => json_decode($files)
+            'files' => json_decode($files, true) // FIX: Decode to array for response
         ];
 
         sendResponse(["message" => "Assignment created successfully", "data" => $responseData], 201);
     } else {
         sendResponse(["error" => "Unable to create assignment"], 500);
     }
-    
-        
-    
     
 }
 
@@ -325,7 +330,7 @@ function deleteAssignment($db, $assignmentId) {
     $deleteCommentsStmt->execute([$assignmentId]);
     
     // TODO: Prepare DELETE query for assignment
-    $deleteAssignmentStmt = $db->prepare("DELETE FROM assignments WHERE id = ?");
+    $deleteAssignmentStmt = $db->prepare("DELETE FROM assignments WHERE id = :id"); // FIX: Changed ? to :id to match bindParam
     
     // TODO: Bind the :id parameter
     $deleteAssignmentStmt->bindParam(':id', $assignmentId);
@@ -365,7 +370,7 @@ function getCommentsByAssignment($db, $assignmentId) {
     try {
         $stmt = $db->prepare("SELECT * FROM comments WHERE assignment_id = ? ORDER BY created_at ASC");
         $stmt->execute([$assignmentId]);
-        $comments = $stmt->fetchAll();
+        $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // Added FETCH_ASSOC
         sendResponse($comments);
     } catch (PDOException $e) {
         sendResponse(['status' => 'error', 'message' => $e->getMessage()], 500);
@@ -483,13 +488,14 @@ function deleteComment($db, $commentId) {
     
     
     // TODO: Prepare DELETE query
-     $stmt = $db->prepare("DELETE FROM comments WHERE id = ?");
+     $stmt = $db->prepare("DELETE FROM comments WHERE id = :id"); // FIX: Changed ? to :id
     
     
     // TODO: Bind the :id parameter
     $stmt->bindParam(':id', $commentId);
     
-    if ($stmt->execute([$commentId])) {
+    // FIX: Removed array argument from execute(), as parameters are already bound via bindParam
+    if ($stmt->execute()) {
         sendResponse(['message' => 'Comment deleted successfully']);
     } else {
         sendResponse(['status' => 'error', 'message' => 'Delete failed'], 500);
@@ -539,7 +545,7 @@ try {
             
         } else {
             // TODO: Invalid resource, return 400 error
-            sendResponse(['status' => 'error', 'message' => 'Invalid resource'], 400);
+            sendResponse(['status' => 'error', 'message' => 'Invalid resource or missing parameters'], 400);
             
         }
         
@@ -674,8 +680,9 @@ function sanitizeInput($data) {
  */
 function validateDate($date) {
     // TODO: Use DateTime::createFromFormat to validate
-    $date = DateTime::createFromFormat('Y-m-d', $date);
-    if ($date && $date->format('Y-m-d') === $date) {
+    // FIX: Use different variable for the object to avoid shadowing input string
+    $d = DateTime::createFromFormat('Y-m-d', $date);
+    if ($d && $d->format('Y-m-d') === $date) {
         return true;
     }
     
@@ -695,10 +702,8 @@ function validateDate($date) {
  */
 function validateAllowedValue($value, $allowedValues) {
     // TODO: Check if $value exists in $allowedValues array
-    if (in_array($value, $allowedValues)) {
-    // TODO: Return the result
+    // FIX: Simplified boolean return logic
     return in_array($value, $allowedValues);
-    }
 }
 
 ?>
