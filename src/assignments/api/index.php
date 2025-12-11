@@ -330,7 +330,8 @@ function deleteAssignment($db, $assignmentId) {
     $deleteCommentsStmt->execute([$assignmentId]);
     
     // TODO: Prepare DELETE query for assignment
-    $deleteAssignmentStmt = $db->prepare("DELETE FROM assignments WHERE id = :id"); // FIX: Changed ? to :id to match bindParam
+    // FIX: Changed ? to :id to match bindParam below
+    $deleteAssignmentStmt = $db->prepare("DELETE FROM assignments WHERE id = :id"); 
     
     // TODO: Bind the :id parameter
     $deleteAssignmentStmt->bindParam(':id', $assignmentId);
@@ -488,7 +489,8 @@ function deleteComment($db, $commentId) {
     
     
     // TODO: Prepare DELETE query
-     $stmt = $db->prepare("DELETE FROM comments WHERE id = :id"); // FIX: Changed ? to :id
+    // FIX: Changed ? to :id
+     $stmt = $db->prepare("DELETE FROM comments WHERE id = :id"); 
     
     
     // TODO: Bind the :id parameter
@@ -527,6 +529,7 @@ try {
     
     // TODO: Route based on HTTP method and resource type
     
+    // $method and $resource are now defined at the top of the file
     if ($method === 'GET') {
         // TODO: Handle GET requests
         
