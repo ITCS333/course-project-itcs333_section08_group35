@@ -18,7 +18,7 @@
  *   - created_at (TIMESTAMP)
  *   - updated_at (TIMESTAMP)
  * 
- * Table: comments
+ * Table: comments_assignment
  * Columns:
  *   - id (INT, PRIMARY KEY, AUTO_INCREMENT)
  *   - assignment_id (VARCHAR(50), FOREIGN KEY)
@@ -326,7 +326,8 @@ function deleteAssignment($db, $assignmentId) {
     
     
     // TODO: Delete associated comments first (due to foreign key constraint)
-    $deleteCommentsStmt = $db->prepare("DELETE FROM comments WHERE assignment_id = ?");
+    // FIX: Updated table name to comments_assignment
+    $deleteCommentsStmt = $db->prepare("DELETE FROM comments_assignment WHERE assignment_id = ?");
     $deleteCommentsStmt->execute([$assignmentId]);
     
     // TODO: Prepare DELETE query for assignment
@@ -369,7 +370,8 @@ function getCommentsByAssignment($db, $assignmentId) {
     }
     
     try {
-        $stmt = $db->prepare("SELECT * FROM comments WHERE assignment_id = ? ORDER BY created_at ASC");
+        // FIX: Updated table name to comments_assignment
+        $stmt = $db->prepare("SELECT * FROM comments_assignment WHERE assignment_id = ? ORDER BY created_at ASC");
         $stmt->execute([$assignmentId]);
         $comments = $stmt->fetchAll(PDO::FETCH_ASSOC); // Added FETCH_ASSOC
         sendResponse($comments);
@@ -421,7 +423,8 @@ function createComment($db, $data) {
     
     
     // TODO: Prepare INSERT query for comment
-    $stmt = $db->prepare("INSERT INTO comments (assignment_id, author, text, created_at) VALUES (:aid, :author, :text, NOW())");
+    // FIX: Updated table name to comments_assignment
+    $stmt = $db->prepare("INSERT INTO comments_assignment (assignment_id, author, text, created_at) VALUES (:aid, :author, :text, NOW())");
     
     
     // TODO: Bind all parameters
@@ -481,7 +484,8 @@ function deleteComment($db, $commentId) {
     
     try{
     // TODO: Check if comment exists
-    $checkStmt = $db->prepare("SELECT id FROM comments WHERE id = ?");
+    // FIX: Updated table name to comments_assignment
+    $checkStmt = $db->prepare("SELECT id FROM comments_assignment WHERE id = ?");
         $checkStmt->execute([$commentId]);
         if ($checkStmt->rowCount() === 0) {
             sendResponse(['status' => 'error', 'message' => 'Comment not found'], 404);
@@ -489,8 +493,8 @@ function deleteComment($db, $commentId) {
     
     
     // TODO: Prepare DELETE query
-    // FIX: Changed ? to :id
-     $stmt = $db->prepare("DELETE FROM comments WHERE id = :id"); 
+    // FIX: Changed ? to :id and table name to comments_assignment
+     $stmt = $db->prepare("DELETE FROM comments_assignment WHERE id = :id"); 
     
     
     // TODO: Bind the :id parameter
