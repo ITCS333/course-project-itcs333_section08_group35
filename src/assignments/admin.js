@@ -69,11 +69,10 @@ function handleTableClick(event) {
     }
   }*/
 }
-
-async function loadAndInitialize() {
+// --- Main Async Function ---
   async function loadAndInitialize() {
     try {
-      const response = await fetch('assignments.json');
+      const response = await fetch('api/assignments.json');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -91,7 +90,7 @@ async function loadAndInitialize() {
       console.error('Error loading assignments:', error);
     }
   }
-}
+
 
 // --- Initial Page Load ---
 // Call the main async function to start the application.
