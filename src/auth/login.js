@@ -103,16 +103,16 @@ function handleLogin(event) {
   let TrimedPassword = Password.value.trim(); 
 
   if (!isValidEmail(TrimedEmail)){
-    displayMessage("invalid email","error");
+    displayMessage("Invalid email format.", "error");
     return;
   }
 
   if (!isValidPassword(TrimedPassword)){
-    displayMessage("password must be at least 8 characters","error");
+    displayMessage("Password must be at least 8 characters.","error");
     return;
   }
 
-  displayMessage("js validated!","success")
+  displayMessage("Login successful!", "success");
 
   Email.value = "";
   Password.value ="";
