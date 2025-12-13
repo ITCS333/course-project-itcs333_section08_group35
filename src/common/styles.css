@@ -1,1 +1,148 @@
 /* CSS Styles */
+
+/**
+ * Global Styles for ITCS333 Course Project
+ * Built on Pico.css v2
+ */
+
+/* 1. Import Pico.css directly */
+@import url('https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css');
+
+/* 2. Custom Color Theme & Variables */
+:root {
+  --pico-font-size: 100%;
+  --pico-border-radius: 0.5rem;
+  
+  /* Custom Accent Color (University Blue) */
+  --pico-primary: #0172ad;
+  --pico-primary-background: #0172ad;
+  --pico-primary-hover: #015f91;
+  
+  /* Spacing helpers */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+}
+
+/* 3. Global Layout Adjustments */
+body > header,
+body > main,
+body > footer {
+  padding: var(--spacing-md) 0;
+}
+
+/* Navbar Tweaks */
+nav ul li strong {
+  font-size: 1.25rem;
+  color: var(--pico-primary);
+}
+
+/* 4. Login / Auth Page (Task 1) */
+/* Wrap your login form in a <main class="container login-container"> */
+.login-container {
+  max-width: 480px;
+  margin-top: 10vh;
+  padding: var(--spacing-lg);
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* 5. Admin Portal & User Management (Task 1) */
+/* Styling for CRUD Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Status messages (PHP Session Flash messages) */
+.alert {
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--pico-border-radius);
+  font-weight: bold;
+}
+.alert-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+}
+.alert-error {
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}
+
+/* 6. Resources, Weeks, Assignments (Task 2, 3, 4) */
+/* Use <article> for items to create "Card" look */
+article.card {
+  margin-bottom: var(--spacing-md);
+}
+
+article.card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.due-date {
+  font-size: 0.85em;
+  color: var(--pico-muted-color);
+  font-style: italic;
+}
+
+/* Grid View for listing items (Optional: wrap articles in <div class="grid-layout">) */
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+/* 7. Discussion Boards (Task 5 & Comments) */
+.discussion-thread {
+  margin-top: var(--spacing-lg);
+}
+
+/* Individual Comment/Post Style */
+.comment {
+  border-left: 4px solid var(--pico-primary);
+  background-color: var(--pico-card-background-color);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border-radius: 0 var(--pico-border-radius) var(--pico-border-radius) 0;
+}
+
+.comment header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  padding-bottom: var(--spacing-sm);
+}
+
+.comment-author {
+  font-weight: bold;
+  color: var(--pico-color);
+}
+
+/* Admin Controls inside lists/cards */
+.actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* Make delete buttons red/distinct */
+button.danger, 
+a[role="button"].danger {
+  background-color: #d93526;
+  border-color: #d93526;
+  color: white;
+}
+button.danger:hover,
+a[role="button"].danger:hover {
+  background-color: #b92b1e;
+  border-color: #b92b1e;
+}
