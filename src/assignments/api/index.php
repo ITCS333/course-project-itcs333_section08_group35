@@ -1,4 +1,7 @@
 <?php
+// After debugging TASK4301 fix
+session_start(); // FIX: Moved to top for autograder requirements
+
 /**
  * Assignment Management API
  * 
@@ -40,8 +43,7 @@
 // ============================================================================
 
 // TODO: Set Content-Type header to application/json
-// After debugging TASK4301 fix
-session_start();
+
 header('Content-Type: application/json; charset=UTF-8');
 
 
@@ -166,13 +168,15 @@ function createAssignment($db, $data) {
 
     //Fix 4315 
     // TODO: Sanitize input data
-    $assignmentId = $data['assignment_id'];
-    // Use session username if available, otherwise use input
-    $author = isset($_SESSION['username']) ? $_SESSION['username'] : sanitizeInput($data['author']);
-    $text = sanitizeInput($data['text']);
+    // FIX: Removed incorrect comment/author logic that was here.
+    // FIX: Defined the variables needed for the query below.
+    $title = sanitizeInput($data['title']);
+    $description = sanitizeInput($data['description']);
+    $due_date = $data['due_date']; // Date shouldn't be sanitized like text, but validated
     
     
     // TODO: Validate due_date format
+    // FIX: Use the $due_date variable defined above
     $date = DateTime::createFromFormat('Y-m-d', $due_date);
     if (!$date || $date->format('Y-m-d') !== $due_date) {
         sendResponse(['status' => 'error', 'message' => 'Invalid due date format. Use YYYY-MM-DD.'], 400);
@@ -401,14 +405,17 @@ function getCommentsByAssignment($db, $assignmentId) {
  */
 function createComment($db, $data) {
     // TODO: Validate required fields
-    if (empty($data['assignment_id']) || empty($data['author']) || empty($data['text'])) {
-        sendResponse(['status' => 'error', 'message' => 'Assignment ID, author, and text are required'], 400);
+    if (empty($data['assignment_id']) || empty($data['text'])) {
+        sendResponse(['status' => 'error', 'message' => 'Assignment ID and text are required'], 400);
     }
     
     
     // TODO: Sanitize input data
     $assignmentId = $data['assignment_id'];
-    $author = sanitizeInput($data['author']);
+    
+    // FIX: Check session for username as per requirement, fallback to input
+    $author = isset($_SESSION['username']) ? $_SESSION['username'] : (isset($data['author']) ? sanitizeInput($data['author']) : 'Anonymous');
+    
     $text = sanitizeInput($data['text']);
     
     
@@ -487,33 +494,34 @@ function deleteComment($db, $commentId) {
     }
     
     try{
-    // TODO: Check if comment exists
-    // FIX: Updated table name to comments_assignment
-    $checkStmt = $db->prepare("SELECT id FROM comments_assignment WHERE id = ?");
+        // TODO: Check if comment exists
+        // FIX: Updated table name to comments_assignment
+        $checkStmt = $db->prepare("SELECT id FROM comments_assignment WHERE id = ?");
         $checkStmt->execute([$commentId]);
         if ($checkStmt->rowCount() === 0) {
             sendResponse(['status' => 'error', 'message' => 'Comment not found'], 404);
         }
-    
-    
-    // TODO: Prepare DELETE query
-    // FIX: Changed ? to :id and table name to comments_assignment
-     $stmt = $db->prepare("DELETE FROM comments_assignment WHERE id = :id"); 
-    
-    
-    // TODO: Bind the :id parameter
-    $stmt->bindParam(':id', $commentId);
-    
-    // FIX: Removed array argument from execute(), as parameters are already bound via bindParam
-    if ($stmt->execute()) {
-        sendResponse(['message' => 'Comment deleted successfully']);
-    } else {
-        sendResponse(['status' => 'error', 'message' => 'Delete failed'], 500);
+        
+        
+        // TODO: Prepare DELETE query
+        // FIX: Changed ? to :id and table name to comments_assignment
+        $stmt = $db->prepare("DELETE FROM comments_assignment WHERE id = :id"); 
+        
+        
+        // TODO: Bind the :id parameter
+        $stmt->bindParam(':id', $commentId);
+        
+        // FIX: Removed array argument from execute(), as parameters are already bound via bindParam
+        if ($stmt->execute()) {
+            sendResponse(['message' => 'Comment deleted successfully']);
+        } else {
+            sendResponse(['status' => 'error', 'message' => 'Delete failed'], 500);
         }
     } catch (PDOException $e) {
         sendResponse(['status' => 'error', 'message' => $e->getMessage()], 500);
     }
-    }
+    
+} // FIX: Corrected curly braces here
     
     
     // TODO: Execute the statement
