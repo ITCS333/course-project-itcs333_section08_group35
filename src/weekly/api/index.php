@@ -1,5 +1,6 @@
 <?php
 session_start();
+$_SESSION['last_activity'] = time();
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json; charset=UTF-8');
