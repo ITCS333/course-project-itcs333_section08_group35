@@ -6,6 +6,7 @@
 // ============================================================================
 // SETUP AND CONFIGURATION
 // ============================================================================
+session_start();
 
 // TODO: Set headers for JSON response and CORS
 header('Access-Control-Allow-Origin: *');
