@@ -163,11 +163,13 @@ function createAssignment($db, $data) {
         sendResponse(['status' => 'error', 'message' => 'Title, description, and due date are required !'], 400);
     }
     
-    
+
+    //Fix 4315 
     // TODO: Sanitize input data
-    $title = htmlspecialchars(strip_tags($data['title']));
-    $description = htmlspecialchars(strip_tags($data['description']));
-    $due_date = htmlspecialchars(strip_tags($data['due_date']));
+    $assignmentId = $data['assignment_id'];
+    // Use session username if available, otherwise use input
+    $author = isset($_SESSION['username']) ? $_SESSION['username'] : sanitizeInput($data['author']);
+    $text = sanitizeInput($data['text']);
     
     
     // TODO: Validate due_date format
