@@ -1,148 +1,312 @@
-/* CSS Styles */
-
 /**
- * Global Styles for ITCS333 Course Project
- * Built on Pico.css v2
+ * FINAL UNIVERSAL THEME
+ * 1. Fixes "Dark Unreadable" List pages (via Article/Card styling).
+ * 2. Fixes Edit/Delete Buttons (via Specific Overrides).
+ * 3. Keeps the Light Blue "Floating Box" design.
  */
 
-/* 1. Import Pico.css directly */
+/* --- 1. CORE IMPORTS --- */
 @import url('https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 
-/* 2. Custom Color Theme & Variables */
+/* --- 2. THEME VARIABLES (Light Blue & Slate) --- */
 :root {
-  --pico-font-size: 100%;
+  --pico-font-family: 'Inter', system-ui, sans-serif;
   --pico-border-radius: 0.5rem;
-  
-  /* Custom Accent Color (University Blue) */
-  --pico-primary: #0172ad;
-  --pico-primary-background: #0172ad;
-  --pico-primary-hover: #015f91;
-  
-  /* Spacing helpers */
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 2rem;
+
+  /* Backgrounds */
+  --pico-background-color: #f0f7ff;
+  /* Lightest Blue Page BG */
+  --pico-card-background-color: #ffffff;
+  /* White Card BG */
+
+  /* Text Colors (Slate Grey - High Contrast) */
+  --pico-color: #334155;
+  --pico-muted-color: #64748b;
+  --pico-h1-color: #0f172a;
+
+  /* Primary Accent (Bright Sky Blue) */
+  --pico-primary: #0ea5e9;
+  --pico-primary-background: #0ea5e9;
+  --pico-primary-hover: #0284c7;
+  --pico-primary-underline: rgba(14, 165, 233, 0.4);
+
+  /* Border */
+  --pico-border-color: #e2e8f0;
 }
 
-/* 3. Global Layout Adjustments */
-body > header,
-body > main,
-body > footer {
-  padding: var(--spacing-md) 0;
-}
-
-/* Navbar Tweaks */
-nav ul li strong {
-  font-size: 1.25rem;
-  color: var(--pico-primary);
-}
-
-/* 4. Login / Auth Page (Task 1) */
-/* Wrap your login form in a <main class="container login-container"> */
-.login-container {
-  max-width: 480px;
-  margin-top: 10vh;
-  padding: var(--spacing-lg);
-  border: 1px solid var(--pico-muted-border-color);
-  border-radius: var(--pico-border-radius);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-/* 5. Admin Portal & User Management (Task 1) */
-/* Styling for CRUD Tables */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-/* Status messages (PHP Session Flash messages) */
-.alert {
-  padding: var(--spacing-sm) var(--spacing-md);
-  margin-bottom: var(--spacing-md);
-  border-radius: var(--pico-border-radius);
-  font-weight: bold;
-}
-.alert-success {
-  background-color: #d1e7dd;
-  color: #0f5132;
-  border: 1px solid #badbcc;
-}
-.alert-error {
-  background-color: #f8d7da;
-  color: #842029;
-  border: 1px solid #f5c2c7;
-}
-
-/* 6. Resources, Weeks, Assignments (Task 2, 3, 4) */
-/* Use <article> for items to create "Card" look */
-article.card {
-  margin-bottom: var(--spacing-md);
-}
-
-article.card header {
+/* --- 3. GLOBAL PAGE LAYOUT --- */
+body {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: var(--spacing-sm);
-}
-
-.due-date {
-  font-size: 0.85em;
-  color: var(--pico-muted-color);
-  font-style: italic;
-}
-
-/* Grid View for listing items (Optional: wrap articles in <div class="grid-layout">) */
-.grid-layout {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--spacing-md);
-}
-
-/* 7. Discussion Boards (Task 5 & Comments) */
-.discussion-thread {
-  margin-top: var(--spacing-lg);
-}
-
-/* Individual Comment/Post Style */
-.comment {
-  border-left: 4px solid var(--pico-primary);
-  background-color: var(--pico-card-background-color);
-  padding: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
-  border-radius: 0 var(--pico-border-radius) var(--pico-border-radius) 0;
-}
-
-.comment header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: var(--pico-muted-color);
-  margin-bottom: var(--spacing-sm);
-  border-bottom: 1px solid var(--pico-muted-border-color);
-  padding-bottom: var(--spacing-sm);
-}
-
-.comment-author {
-  font-weight: bold;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  /* Nice gradient background */
+  background-image: linear-gradient(to bottom, #e0f2fe, #f0f7ff);
   color: var(--pico-color);
 }
 
-/* Admin Controls inside lists/cards */
-.actions {
-  display: flex;
-  gap: var(--spacing-sm);
+/* THE "WHITE BOX" CONTAINER */
+/* This grabs <main> and turns it into the sheet of paper */
+body>main,
+.container {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 1000px;
+  /* Limits width so lines aren't too long */
+  padding: 3rem;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dae3f3;
+  margin-top: 1rem;
 }
 
-/* Make delete buttons red/distinct */
-button.danger, 
-a[role="button"].danger {
-  background-color: #d93526;
-  border-color: #d93526;
+/* --- 4. TYPOGRAPHY --- */
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Poppins', sans-serif;
+  color: #0f172a;
+  /* Very Dark Blue Headings */
+}
+
+/* Header H1 Styling */
+header h1,
+body>header h1 {
+  text-align: center;
+  color: var(--pico-primary);
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Links */
+a {
+  color: var(--pico-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+/* --- 5. FORMS & INPUTS --- */
+input:not([type="submit"]),
+select,
+textarea {
+  background-color: #f8fafc !important;
+  /* Light Grey Input BG */
+  border: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background-color: #fff !important;
+  border-color: var(--pico-primary) !important;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15) !important;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+
+/* --- 6. TABLES (Clean & Readable) --- */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+thead th {
+  background-color: #e0f2fe;
+  /* Light Blue Header */
+  color: #0369a1;
+  /* Dark Blue Text */
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  padding: 1rem;
+  border-bottom: 2px solid #bae6fd;
+}
+
+td {
+  background-color: #fff;
+  color: #334155;
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+tr:hover td {
+  background-color: #f8fafc;
+  /* Subtle hover effect */
+}
+
+
+/* --- 7. CARDS & ASSIGNMENT LISTS (Fixes list.html) --- */
+/* This targets <article> tags used in your list view */
+article,
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+article h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--pico-primary);
+}
+
+article p {
+  color: #475569;
+  /* Ensure text is Slate Grey, not dark blue */
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Style the "View Details" link inside assignments to look like a button */
+article a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--pico-primary);
+}
+
+
+/* --- 8. BUTTONS (The Fix) --- */
+
+/* Base Button Style */
+button,
+input[type="submit"],
+a[role="button"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  margin-right: 5px;
+  text-decoration: none !important;
+}
+
+/* -- A. DELETE BUTTONS (Red) -- */
+/* We use !important to force this color over any default theme */
+button.btn-delete,
+.danger,
+.contrast {
+  background-color: #fee2e2 !important;
+  /* Very Light Red */
+  color: #ef4444 !important;
+  /* Red Text */
+  border: 1px solid #fecdd3 !important;
+}
+
+button.btn-delete:hover,
+.danger:hover,
+.contrast:hover {
+  background-color: #ef4444 !important;
+  /* Solid Red */
+  color: white !important;
+  border-color: #ef4444 !important;
+}
+
+/* Icon (Trash) */
+button.btn-delete::before,
+.danger::before {
+  content: "\1F5D1";
+  margin-right: 6px;
+  font-size: 1.1em;
+}
+
+/* -- B. EDIT BUTTONS (White/Grey) -- */
+button.btn-edit,
+.secondary {
+  background-color: #ffffff !important;
+  color: #475569 !important;
+  /* Slate Text */
+  border: 1px solid #cbd5e1 !important;
+}
+
+button.btn-edit:hover,
+.secondary:hover {
+  background-color: #f0f9ff !important;
+  color: var(--pico-primary) !important;
+  border-color: var(--pico-primary) !important;
+}
+
+/* Icon (Pencil) */
+button.btn-edit::before,
+.secondary::before {
+  content: "\270E";
+  margin-right: 6px;
+  font-size: 1.1em;
+}
+
+/* -- C. ADD / SUBMIT BUTTONS (Primary Blue) -- */
+button[type="submit"],
+#add-assignment {
+  background-color: var(--pico-primary);
   color: white;
 }
-button.danger:hover,
-a[role="button"].danger:hover {
-  background-color: #b92b1e;
-  border-color: #b92b1e;
+
+button[type="submit"]:hover,
+#add-assignment:hover {
+  background-color: var(--pico-primary-hover);
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+}
+
+/* Icon (Plus) */
+button[type="submit"]::before,
+#add-assignment::before {
+  content: "+";
+  font-weight: 800;
+  margin-right: 5px;
+  font-size: 1.1em;
+}
+
+
+/* --- 9. RESPONSIVE GRID (Desktop) --- */
+@media (min-width: 992px) {
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  form header,
+  form h2,
+  form .full-width,
+  textarea {
+    grid-column: span 2;
+  }
+
+  /* Make the Add button sit nicely on the left */
+  button[type="submit"] {
+    grid-column: span 2;
+    justify-self: start;
+    min-width: 200px;
+  }
 }
