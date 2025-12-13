@@ -1,6 +1,13 @@
 // --- Element Selections ---
 const listSection = document.getElementById("assignment-list-section");
 
+// --- User Authentication ---
+if (response.status === 401) {
+    // User is not logged in. Redirect them to the login page.
+    window.location.href = "../auth/login.html"; 
+    return;
+}
+
 // --- Functions ---
 function createAssignmentArticle(assignment) {
   const article = document.createElement("article");
