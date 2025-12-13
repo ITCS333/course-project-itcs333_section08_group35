@@ -3,15 +3,16 @@
 # ITCS333 Course Page
 
 ## The names and student IDs of all team members.
-Ali Hasan Mohammed Hasan Alhayki 202307595
+## Team Members (Names & Student IDs)
 
-Mohammed Abdulla Hassan Alaswad  202310618
+| No. | Full Name                                   | Student ID |
+|:--:|----------------------------------------------|:----------:|
+| 1  | **Ali Hasan Mohammed Hasan Alhayki**         | 202307595  |
+| 2  | **Mohammed Abdulla Hassan Alaswad**          | 202310618  |
+| 3  | **Mohammed A. Aziz Almutawa**                | 202307580  |
+| 4  | **Ebrahim Mohammed Alfayoumi**               | 202307873  |
+| 5  | **Ahmed AbdulAmeer Ahmed Barakat**           | 202308929  |
 
-Mohammed A.Aziz Almutawa 202307580
-
-Ebrahim Mohammed alfayoumi 202307873
-
-Ahmed AbdulAmeer Ahmed Barakat 202308929
 ## A table indicating which student was responsible for which task.
 
 | Task   | Student Name                                  |
