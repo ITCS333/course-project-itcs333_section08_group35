@@ -40,6 +40,8 @@
 // ============================================================================
 
 // TODO: Set Content-Type header to application/json
+// After debugging TASK4301 fix
+session_start();
 header('Content-Type: application/json; charset=UTF-8');
 
 
