@@ -13,13 +13,13 @@ Ebrahim Mohammed alfayoumi 202307873
 
 Ahmed AbdulAmeer Ahmed Barakat 202308929
 ## A table indicating which student was responsible for which task.
-Task 4 - Ali Hasan Mohammed Hasan Alhayki
 
-Task 3 - Mohammed Abdulla Hassan AlAswad  
+| Task   | Student Name                                  |
+|--------|-----------------------------------------------|
+| Task 1 | Mohammed A. Aziz Almutawa                     |
+| Task 2 | Ahmed AbdulAmeer Ahmed Barakat                |
+| Task 3 | Mohammed Abdulla Hassan AlAswad               |
+| Task 4 | Ali Hasan Mohammed Hasan Alhayki              |
+| Task 5 | Ebrahim Mohammed Alfayoumi                    |
 
-Task 1 - Mohammed A.Aziz Almutawa
-
-Task 5 - Ebrahim Mohammed alfayoumi
-
-Task 2 - Ahmed AbdulAmeer Ahmed Barakat
 ## A link to your live, hosted application on Replit.
