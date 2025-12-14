@@ -167,7 +167,8 @@ async function handleTableClick(event) {
 } 
 
 // --- Main Async Function ---
-async function loadAndInitialize() {
+// Fixed the function name to match the Autograder requirement TASK4202 FIX
+async function loadAssignments() {
   try {
     const response = await fetch('api/index.php?resource=assignments');
       
@@ -195,4 +196,5 @@ async function loadAndInitialize() {
 
 // --- Initial Page Load ---
 // Call the main async function to start the application.
-loadAndInitialize();
+// Fixed the function name to match the Autograder requirement TASK4202 FIX
+loadAssignments();
