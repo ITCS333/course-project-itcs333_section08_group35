@@ -7,10 +7,12 @@ let editingId = null;
 // --- Element Selections ---
 const assignmentForm = document.querySelector("#assignment-form");
 const assignmentTbody = document.querySelector("#assignments-tbody");
-const submitBtn = assignmentForm.querySelector("button[type='submit']"); // Select the submit button to change text
+// Fix: Added safety check. If assignmentForm is null, this won't crash the script.
+const submitBtn = assignmentForm ? assignmentForm.querySelector("button[type='submit']") : null; 
 
 // --- Functions ---
-function createAssignmentRow(assignment) {
+// Fix: Renamed from createAssignmentRow to createAssignmentArticle to match TASK4201 requirements
+function createAssignmentArticle(assignment) {
   const tr = document.createElement("tr");
   // Calculate file count for display
   const fileCount = Array.isArray(assignment.files) ? assignment.files.length : 0;
@@ -27,9 +29,11 @@ function createAssignmentRow(assignment) {
 }
 
 function renderTable() {
+  if (!assignmentTbody) return; // Safety check
   assignmentTbody.innerHTML = "";
   assignments.forEach(assignment => {
-    const row = createAssignmentRow(assignment);
+    // Fix: Updated function call to match the renamed function
+    const row = createAssignmentArticle(assignment);
     assignmentTbody.appendChild(row);
   });
 }
@@ -42,10 +46,12 @@ async function handleAddAssignment(event) {
   const dueDateValue = formElements["due-date"] ? formElements["due-date"].value : ""; 
 
   // Split files into array if multiple lines
-  const fileLines = formElements["file"].value
+  // Fix: Added safety check in case "file" input is missing
+  const fileInput = formElements["file"];
+  const fileLines = fileInput ? fileInput.value
     .split('\n')
     .map(line => line.trim())
-    .filter(line => line.length > 0);
+    .filter(line => line.length > 0) : [];
 
   const assignmentData = {
     title: titleValue,
