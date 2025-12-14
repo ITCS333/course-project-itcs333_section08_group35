@@ -13,8 +13,8 @@ session_start();
 
 // --- Set Response Headers ---
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origion: *');
-header('Access-Control-Allow-Methods: Post');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
 // --- Check Request Method ---
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST'){
 }
 
 // --- Get POST Data ---
-$rawData = file_get_contents('php://input')
+$rawData = file_get_contents('php://input');
 
 
 $data = json_decode($rawData , true);
@@ -42,7 +42,7 @@ if (!isset($data['email']) || !isset($data['password'])){
 }
 
 $email = trim($data['email']);
-$paswoord = trim($data['password']);
+$password = trim($data['password']);
 
 
 // --- Server-Side Validation (Optional but Recommended) ---
@@ -50,14 +50,16 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
     echo json_encode([
         'success' => false,
         'message' => 'invalid email format'
-    ])
+    ]);
+    exit;
 }
 
-if (strlen($paswoord)<8) {
+if (strlen($password)<8) {
     echo json_encode([
         'success' => false,
-        'message' => 'password must be at least 8 chars'
-    ])
+        'message' => 'password must be at least 8 charchaters'
+    ]);
+    exit;
 }
 
 // --- Database Connection ---
@@ -88,14 +90,14 @@ try{
     $stmt = $pdo-> prepare($sql);
 
     // --- Execute the Query ---
-    $stmt->execute(['email => $email']);
+    $stmt->execute([$email]);
 
     // --- Fetch User Data ---
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
     // --- Verify User Exists and Password Matches ---  
-    if ($user && passwod_verify($password , $user['password'])) {
+    if ($user && password_verify($password , $user['password'])) {
         $_SESSION['user_id']=$user['id'];
         $_SESSION['user_name']=$user['name'];
         $_SESSION['user_email']=$user['email'];
@@ -103,7 +105,7 @@ try{
 
         $response = [
             'success' => true,
-            'message' => 'login successful'
+            'message' => 'login successful',
             'user' => [
                 'id' => $user['id'],
                 'name' => $user['name'],
