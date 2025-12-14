@@ -57,7 +57,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
 if (strlen($password)<8) {
     echo json_encode([
         'success' => false,
-        'message' => 'password must be at least 8 charchaters'
+        'message' => 'password must be at least 8 characters'
     ]);
     exit;
 }
@@ -101,7 +101,7 @@ try{
         $_SESSION['user_id']=$user['id'];
         $_SESSION['user_name']=$user['name'];
         $_SESSION['user_email']=$user['email'];
-        $_SESSION['looged_in']= true;
+        $_SESSION['logged_in']= true;
 
         $response = [
             'success' => true,
@@ -129,7 +129,7 @@ catch (PDOException $e){
 
     echo json_encode([
         'success' => false,
-        'message' => 'theres error , try again later'
+        'message' => 'there is error , try again later'
     ]);
     exit;
 }
