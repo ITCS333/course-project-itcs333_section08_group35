@@ -45,7 +45,7 @@
  *     POST   /api/resources.php?action=comment                    - Create new comment
  *     DELETE /api/resources.php?comment_id={id}&action=delete_comment - Delete comment
  */
-
+session_start();
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
