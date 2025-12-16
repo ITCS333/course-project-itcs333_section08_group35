@@ -1,8 +1,51 @@
 <?php
-
-// Start session at the very beginning
+/**
+ * Course Resources API
+ * 
+ * This is a RESTful API that handles all CRUD operations for course resources 
+ * and their associated comments/discussions.
+ * It uses PDO to interact with a MySQL database.
+ * 
+ * Database Table Structures (for reference):
+ * 
+ * Table: resources
+ * Columns:
+ *   - id (INT, PRIMARY KEY, AUTO_INCREMENT)
+ *   - title (VARCHAR(255))
+ *   - description (TEXT)
+ *   - link (VARCHAR(500))
+ *   - created_at (TIMESTAMP)
+ * 
+ * Table: comments
+ * Columns:
+ *   - id (INT, PRIMARY KEY, AUTO_INCREMENT)
+ *   - resource_id (INT, FOREIGN KEY references resources.id)
+ *   - author (VARCHAR(100))
+ *   - text (TEXT)
+ *   - created_at (TIMESTAMP)
+ * 
+ * HTTP Methods Supported:
+ *   - GET: Retrieve resource(s) or comment(s)
+ *   - POST: Create a new resource or comment
+ *   - PUT: Update an existing resource
+ *   - DELETE: Delete a resource or comment
+ * 
+ * Response Format: JSON
+ * 
+ * API Endpoints:
+ *   Resources:
+ *     GET    /api/resources.php                    - Get all resources
+ *     GET    /api/resources.php?id={id}           - Get single resource by ID
+ *     POST   /api/resources.php                    - Create new resource
+ *     PUT    /api/resources.php                    - Update resource
+ *     DELETE /api/resources.php?id={id}           - Delete resource
+ * 
+ *   Comments:
+ *     GET    /api/resources.php?resource_id={id}&action=comments  - Get comments for resource
+ *     POST   /api/resources.php?action=comment                    - Create new comment
+ *     DELETE /api/resources.php?comment_id={id}&action=delete_comment - Delete comment
+ */
 session_start();
-
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
@@ -26,24 +69,10 @@ $id = isset($_GET['id']) ? $_GET['id'] : null;
 $resourceId = isset($_GET['resource_id']) ? $_GET['resource_id'] : null;
 $commentId = isset($_GET['comment_id']) ? $_GET['comment_id'] : null;
 
-// Initialize session data for tracking user activity
-if (!isset($_SESSION['user_activity'])) {
-    $_SESSION['user_activity'] = [];
-}
-
-// Store last access time in session
-$_SESSION['last_access'] = time();
-
 function getAllResources($db) {
     $searchTerm = isset($_GET['search']) ? $_GET['search'] : null;
     $sortBy = isset($_GET['sort']) ? $_GET['sort'] : 'created_at';
     $orderDir = isset($_GET['order']) ? $_GET['order'] : 'desc';
-
-    // Track user activity in session
-    $_SESSION['user_activity'][] = [
-        'action' => 'view_all_resources',
-        'timestamp' => time()
-    ];
 
     $validColumns = ['title', 'created_at'];
     if (!in_array($sortBy, $validColumns)) {
@@ -79,13 +108,6 @@ function getResourceById($db, $resourceId) {
         sendResponse(['success' => false, 'message' => 'Invalid resource ID'], 400);
     }
    
-    // Track in session
-    $_SESSION['user_activity'][] = [
-        'action' => 'view_resource',
-        'resource_id' => $resourceId,
-        'timestamp' => time()
-    ];
-
     $fetchQuery = "SELECT * FROM resources WHERE id = ?";
     $statement = $db->prepare($fetchQuery);
     $statement->execute([$resourceId]);
@@ -126,14 +148,6 @@ function createResource($db, $data) {
     
     if ($result) {
         $newId = $db->lastInsertId();
-        
-        // Track in session
-        $_SESSION['user_activity'][] = [
-            'action' => 'create_resource',
-            'resource_id' => $newId,
-            'timestamp' => time()
-        ];
-        
         sendResponse(['success' => true, 'message' => 'Resource created', 'id' => $newId], 201);
     } else {
         sendResponse(['success' => false, 'message' => 'Failed to create resource'], 500);
@@ -186,13 +200,6 @@ function updateResource($db, $data) {
     $updateStmt = $db->prepare($updateQuery);
     
     if ($updateStmt->execute($updateVals)) {
-        // Track in session
-        $_SESSION['user_activity'][] = [
-            'action' => 'update_resource',
-            'resource_id' => $resId,
-            'timestamp' => time()
-        ];
-        
         sendResponse(['success' => true, 'message' => 'Resource updated']);
     } else {
         sendResponse(['success' => false, 'message' => 'Update failed'], 500);
@@ -224,14 +231,6 @@ function deleteResource($db, $resourceId) {
         $deleteResourceStmt->execute([$resourceId]);
 
         $db->commit();
-        
-        // Track in session
-        $_SESSION['user_activity'][] = [
-            'action' => 'delete_resource',
-            'resource_id' => $resourceId,
-            'timestamp' => time()
-        ];
-        
         sendResponse(['success' => true, 'message' => 'Resource deleted']);
     } catch (Exception $error) {
         $db->rollBack();
@@ -243,13 +242,6 @@ function getCommentsByResourceId($db, $resourceId) {
     if (!is_numeric($resourceId)) {
         sendResponse(['success' => false, 'message' => 'Invalid resource ID'], 400);
     }
-    
-    // Track in session
-    $_SESSION['user_activity'][] = [
-        'action' => 'view_comments',
-        'resource_id' => $resourceId,
-        'timestamp' => time()
-    ];
     
     $fetchQuery = "SELECT * FROM comments_resource WHERE resource_id = ? ORDER BY created_at ASC";
     $statement = $db->prepare($fetchQuery);
@@ -293,15 +285,6 @@ function createComment($db, $data) {
     
     if ($insertStmt->execute([$data['resource_id'], $commentAuthor, $commentText])) {
         $newCommentId = $db->lastInsertId();
-        
-        // Track in session
-        $_SESSION['user_activity'][] = [
-            'action' => 'create_comment',
-            'resource_id' => $data['resource_id'],
-            'comment_id' => $newCommentId,
-            'timestamp' => time()
-        ];
-        
         sendResponse(['success' => true, 'message' => 'Comment created', 'id' => $newCommentId], 201);
     } else {
         sendResponse(['success' => false, 'message' => 'Failed to create comment'], 500);
@@ -325,13 +308,6 @@ function deleteComment($db, $commentId) {
     $deleteStmt = $db->prepare($deleteQuery);
     
     if ($deleteStmt->execute([$commentId])) {
-        // Track in session
-        $_SESSION['user_activity'][] = [
-            'action' => 'delete_comment',
-            'comment_id' => $commentId,
-            'timestamp' => time()
-        ];
-        
         sendResponse(['success' => true, 'message' => 'Comment deleted']);
     } else {
         sendResponse(['success' => false, 'message' => 'Delete failed'], 500);
@@ -391,3 +367,4 @@ function sendResponse($responseData, $httpCode = 200) {
 }
 
 ?>
+
