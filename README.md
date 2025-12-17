@@ -25,5 +25,6 @@
 
 ## A link to your live, hosted application on Replit.
 
-### Last Update 13th-Dec-2025 11:55pm
-https://ef02846b-f498-43e6-acf8-6ee58e1beaf5-00-3a50h0d5tyl6o.sisko.replit.dev/
+### Last Update 17th-Dec-2025 4:00 PM
+[https://ef02846b-f498-43e6-acf8-6ee58e1beaf5-00-3a50h0d5tyl6o.sisko.replit.dev/
+](https://ef02846b-f498-43e6-acf8-6ee58e1beaf5-00-3a50h0d5tyl6o.sisko.replit.dev/auth/login.html)
