@@ -1,4 +1,9 @@
 <?php
+// --- FIX: Prevent PHP Warnings from breaking JSON ---
+error_reporting(0);          
+ini_set('display_errors', 0);
+ob_start();                  
+
 /**
  * Authentication Handler for Login Form
  * 
@@ -6,7 +11,6 @@
  * It validates credentials against a MySQL database using PDO,
  * creates sessions, and returns JSON responses.
  */
-
 
 // --- Session Management ---
 session_start();
@@ -17,49 +21,38 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
+// --- Helper Function to Output JSON Cleanly ---
+function sendJson($data) {
+    ob_clean(); 
+    echo json_encode($data);
+    exit;
+}
+
 // --- Check Request Method ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST'){
-    echo json_encode([
-        'success' => false,
-        'message' => 'invalid request method'
-    ]);
-    exit;
+    sendJson(['success' => false, 'message' => 'invalid request method']);
 }
 
 // --- Get POST Data ---
 $rawData = file_get_contents('php://input');
-
-
 $data = json_decode($rawData , true);
 
-
+// Check if decoding failed or fields are missing
 if (!isset($data['email']) || !isset($data['password'])){
-    echo json_encode([
-        'success' => false,
-        'message' => 'email and password are required'
-    ]);
-    exit;
+    sendJson(['success' => false, 'message' => 'email and password are required']);
 }
 
 $email = trim($data['email']);
 $password = trim($data['password']);
 
-
-// --- Server-Side Validation (Optional but Recommended) ---
+// --- Server-Side Validation ---
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
-    echo json_encode([
-        'success' => false,
-        'message' => 'invalid email format'
-    ]);
-    exit;
+    sendJson(['success' => false, 'message' => 'invalid email format']);
 }
 
-if (strlen($password)<4) { // Adjusted min length to 4 to match the test password "password" logic if needed, or keep 8
-    echo json_encode([
-        'success' => false,
-        'message' => 'password must be at least 8 characters'
-    ]);
-    exit;
+// Adjusted min length to 4 to match the test password "password" logic if needed
+if (strlen($password) < 4) { 
+    sendJson(['success' => false, 'message' => 'password must be at least 4 characters']);
 }
 
 // --- Database Connection ---
@@ -68,33 +61,27 @@ function getDBConnection() {
     $host = '127.0.0.1';
     $dbname = 'course';
     $username = 'admin';
-    $password = 'password123';
-    
+    $db_password = 'password123'; // Renamed variable to avoid conflict with user input $password
+
     try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $db_password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
     } catch (PDOException $e) {
-        // Return JSON error on connection fail instead of throwing raw exception which breaks JSON parsing in JS
-        echo json_encode([
-            'success' => false,
-            'message' => 'Database connection failed'
-        ]);
-        exit;
+        // Return JSON error on connection fail instead of throwing raw exception
+        sendJson(['success' => false, 'message' => 'Database connection failed']);
     }
 }
+
 $pdo = getDBConnection();
 
-
-
-try{
-
+try {
     // --- Prepare SQL Query ---
-    // Added 'role' to the select so we can store it in the session for the dashboard
-    $sql = "SELECT id, name, email, password, role FROM users WHERE email = ?";
+    // FIXED: Changed 'role' to 'is_admin' to match your Schema as requested in the target example
+    $sql = "SELECT id, name, email, password, is_admin FROM users WHERE email = ?";
 
     // --- Prepare the Statement ---
-    $stmt = $pdo-> prepare($sql);
+    $stmt = $pdo->prepare($sql);
 
     // --- Execute the Query ---
     $stmt->execute([$email]);
@@ -102,20 +89,21 @@ try{
     // --- Fetch User Data ---
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
     // --- Verify User Exists and Password Matches ---  
-    // FIXED: Your database seeds plain text passwords, but the code used password_verify.
-    // I added a check for BOTH:
-    // 1. Plain text check ($password === $user['password']) -> For the default seeded users
-    // 2. Hash check (password_verify) -> For future security best practices
+    // 1. Check if user exists
+    // 2. Check Password: We check BOTH Plain text (for seeded users) AND Hash (for security)
     if ($user && ($password === $user['password'] || password_verify($password , $user['password']))) {
-        $_SESSION['user_id']=$user['id'];
-        $_SESSION['user_name']=$user['name'];
-        $_SESSION['user_email']=$user['email'];
-        $_SESSION['user_role']=$user['role']; // Added this so dashboard works
-        $_SESSION['logged_in']= true;
 
-        $response = [
+        // CONVERT is_admin (0/1) to String Role for Dashboard
+        $roleName = ($user['is_admin'] == 1) ? 'Admin' : 'Student';
+
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_name'] = $user['name'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_role'] = $roleName; 
+        $_SESSION['logged_in'] = true;
+
+        sendJson([
             'success' => true,
             'message' => 'login successful',
             // Added redirect path so JS knows where to go
@@ -124,29 +112,21 @@ try{
                 'id' => $user['id'],
                 'name' => $user['name'],
                 'email' => $user['email'],
-                'role' => $user['role']
+                'role' => $roleName
             ]
-        ];
-
-        echo json_encode($response);
-        exit; }
-    else {
-        $response = [
-            'success' => false,
-            'message' => 'invalid email or password' 
-        ];
-        echo json_encode($response);
-        exit;
+        ]);
     }
-}
-catch (PDOException $e){
-    error_log('Database error' . $e->getMessage());
+    else {
+        sendJson(['success' => false, 'message' => 'Invalid email or password']);
+    }
 
-    echo json_encode([
+} catch (PDOException $e) {
+    // Log error internally and send generic message to user
+    error_log('Database error: ' . $e->getMessage());
+    
+    sendJson([
         'success' => false,
-        'message' => 'there is error , try again later'
+        'message' => 'Database Error: ' . $e->getMessage() // Showing message for debugging purposes
     ]);
-    exit;
 }
-
 ?>
