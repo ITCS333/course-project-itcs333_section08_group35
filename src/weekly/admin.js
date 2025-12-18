@@ -135,7 +135,7 @@ function handleTableClick(event) {
 async function loadAndInitialize() {
   try {
     // 1. Fetch data from weeks.json
-    const response = await fetch('weeks.json');
+    const response = await fetch('../api/weeks.json');
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
