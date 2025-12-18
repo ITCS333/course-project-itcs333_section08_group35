@@ -25,5 +25,12 @@
 
 ## A link to your live, hosted application on Replit.
 
-### Last Update 13th-Dec-2025 11:55pm
-https://ef02846b-f498-43e6-acf8-6ee58e1beaf5-00-3a50h0d5tyl6o.sisko.replit.dev/
+### Last Update 18th-Dec-2025 7:40 PM
+https://replit.com/@ali7aikii/ITCS333-Course-Project-Group-35?v=1
+
+### Disclamer the link below may not work due to server's not being awake, contact any member of the team !
+
+[https://ef02846b-f498-43e6-acf8-6ee58e1beaf5-00-3a50h0d5tyl6o.sisko.replit.dev/
+](https://ef02846b-f498-43e6-acf8-6ee58e1beaf5-00-3a50h0d5tyl6o.sisko.replit.dev/auth/login.html)
+
+

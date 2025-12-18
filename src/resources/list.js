@@ -13,6 +13,7 @@ function createResourceArticle(resource) {
 
     const linkEl = document.createElement('a');
     linkEl.textContent = 'View Details';
+    // FIXED: Used backticks (`) for template literal to make the ID dynamic
     linkEl.href = `details.html?id=${resource.id}`;
     linkEl.setAttribute('role', 'button');
     article.appendChild(linkEl);
@@ -21,8 +22,20 @@ function createResourceArticle(resource) {
 }
 
 async function loadResources() {
+    // Safety check: ensure the element exists before running logic
+    if (!listSection) {
+        console.error('Error: #resource-list-section not found in the DOM.');
+        return;
+    }
+
     try {
         const response = await fetch('api/index.php');
+
+        // FIXED: Check if the server actually returned a valid page (status 200-299)
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const json = await response.json();
 
         if (!json.success) {
@@ -48,4 +61,5 @@ async function loadResources() {
     }
 }
 
+// Run the function
 loadResources();
