@@ -5,12 +5,12 @@
 // --- Global Data Store ---
 // This will hold the weekly data loaded from the JSON file.
 let weeks = [];
-// Added: Track which week is being edited
+// Added: Variable to track the ID of the week being edited
 let editingId = null;
 
 // --- Element Selections ---
 const weekForm = document.querySelector('#week-form');
-// Fixed: Selection matches the <tbody> inside #weeks-table
+// Fixed: Selection targets the tbody inside the weeks-table
 const weeksTableBody = document.querySelector('#weeks-table tbody');
 
 // --- Functions ---
@@ -92,31 +92,37 @@ async function handleAddWeek(event) {
 
   // 4. Create new week object
   // Note: We generate a pseudo-unique ID using Date.now()
-  const newWeek = {
-    id: editingId || `week_${Date.now()}`,
+  // Fixed: 'start_date' must match the PHP API's expected key
+  const weekData = {
     title: titleInput.value,
-    date: dateInput.value,
+    start_date: dateInput.value, 
     description: descInput.value,
     links: linksArray
   };
 
+  // Determine if we are updating (PUT) or creating (POST)
+  let method = 'POST';
+  if (editingId) {
+      method = 'PUT';
+      weekData.id = editingId;
+  }
+
   try {
-    // PERSISTENCE: Send to server
+    // Send request to API
     const response = await fetch('api/index.php?resource=weeks', {
-        method: 'POST',
+        method: method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newWeek)
+        body: JSON.stringify(weekData)
     });
 
-    if (!response.ok) throw new Error("Server error");
-
-    // 5. Add to global array (Refresh from server or update locally)
-    if (editingId) {
-        const index = weeks.findIndex(w => String(w.id) === String(editingId));
-        weeks[index] = newWeek;
-    } else {
-        weeks.push(newWeek);
+    if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.message || "Server Error");
     }
+
+    // 5. Add to global array (or refresh all)
+    const result = await fetch('api/index.php?resource=weeks');
+    weeks = await result.json();
 
     // 6. Refresh the table
     renderTable();
@@ -126,8 +132,9 @@ async function handleAddWeek(event) {
     editingId = null;
     document.querySelector('#add-week').textContent = "Add Week";
 
-  } catch (err) {
-      console.error("Save failed", err);
+  } catch (error) {
+    console.error("Failed to save week:", error);
+    alert("Could not save to server. " + error.message);
   }
 }
 
@@ -136,38 +143,47 @@ async function handleAddWeek(event) {
  * Specifically looks for the Delete button.
  */
 async function handleTableClick(event) {
+  const target = event.target;
+
   // 1. Check if the clicked element is a delete button
-  if (event.target.classList.contains('btn-delete')) {
+  if (target.classList.contains('btn-delete')) {
     // 2. Get the ID from the data attribute
-    const idToDelete = event.target.dataset.id;
-    
+    const idToDelete = target.dataset.id;
+
     // 3. Confirm deletion (optional, but good UX)
     if(confirm("Are you sure you want to delete this week?")) {
         try {
-            // PERSISTENCE: Delete from server
-            await fetch(`api/index.php?resource=weeks&id=${idToDelete}`, { method: 'DELETE' });
+            const response = await fetch(`api/index.php?resource=weeks&id=${idToDelete}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) throw new Error("Delete failed");
 
             // 4. Filter out the week with the matching ID
-            weeks = weeks.filter(week => String(week.id) !== idToDelete);
-        
+            weeks = weeks.filter(week => String(week.id) !== String(idToDelete));
+
             // 5. Refresh the table
             renderTable();
-        } catch (err) {
-            console.error("Delete failed", err);
+        } catch (error) {
+            alert("Error deleting: " + error.message);
         }
     }
   }
 
-  // Logic for Edit button (as noted in original comments)
-  if (event.target.classList.contains('btn-edit')) {
-    const idToEdit = event.target.dataset.id;
-    const week = weeks.find(w => String(w.id) === idToEdit);
+  // Handle Edit button logic
+  if (target.classList.contains('btn-edit')) {
+    const idToEdit = target.dataset.id;
+    const week = weeks.find(w => String(w.id) === String(idToEdit));
+
     if (week) {
         editingId = idToEdit;
+        // Fill the form fields
         document.querySelector('#week-title').value = week.title;
-        document.querySelector('#week-start-date').value = week.date || '';
+        document.querySelector('#week-start-date').value = week.start_date || '';
         document.querySelector('#week-description').value = week.description;
-        document.querySelector('#week-links').value = week.links ? week.links.join('\n') : '';
+        document.querySelector('#week-links').value = Array.isArray(week.links) ? week.links.join('\n') : '';
+
+        // Change button text
         document.querySelector('#add-week').textContent = "Update Week";
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -182,9 +198,11 @@ async function loadAndInitialize() {
   try {
     // 1. Fetch data from api
     const response = await fetch('api/index.php?resource=weeks');
-    
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+        // If 401, they might need to log in
+        if(response.status === 401) alert("Please log in first.");
+        throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     // 2. Parse JSON and store in global variable
