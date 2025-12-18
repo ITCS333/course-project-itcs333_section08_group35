@@ -10,11 +10,12 @@
 
     <!-- TODO: Link to your CSS framework or stylesheet. -->
     <link rel="stylesheet" href="../common/styles.css">
+    <script src="details.js" defer></script>
 </head>
 <body>
     <!-- TODO: Create a 'header' with a main heading ('h1'). Use a dummy title like "Week 1: Introduction to HTML". -->
     <header>
-        <h1 id="week-title">Week 1: Introduction to HTML</h1>
+        <h1>Week 1: Introduction to HTML</h1>
     </header>
 
     <!-- TODO: Create the 'main' content area. -->
@@ -24,19 +25,19 @@
         <!-- TODO: Use an 'article' to display the main weekly information. -->
         <article id="week-content">
             <!-- TODO: Add a paragraph ('p') to display the start date, e.g., "Starts on: YYYY-MM-DD". -->
-            <p id="week-start-date"><strong>Starts on:</strong> 2023-10-01</p>
+            <p><strong>Starts on:</strong> 2023-10-01</p>
 
             <!-- TODO: Add a sub-heading ('h2') "Description & Notes". -->
-            <h2 >Description & Notes</h2>
+            <h2>Description & Notes</h2>
             
             <!-- TODO: Add a paragraph ('p') with dummy text for the week's detailed notes. -->
-            <p id="week-description">In this introductory week, we will cover the history of the web, how the internet works, and the basic building blocks of a webpage using HTML5. We will focus on semantic tags, proper document structure, and accessibility basics.</p>
+            <p>In this introductory week, we will cover the history of the web, how the internet works, and the basic building blocks of a webpage using HTML5. We will focus on semantic tags, proper document structure, and accessibility basics.</p>
 
             <!-- TODO: Add another sub-heading ('h2') "Exercises & Resources". -->
             <h2>Exercises & Resources</h2>
 
             <!-- TODO: Use an unordered list ('ul') to display the links for the week. -->
-            <ul id="week-links-list">
+            <ul>
                 <!-- TODO: Add list items ('li') with anchor tags ('a') for each resource. Use dummy links for now. -->
                 <li><a href="#" target="_blank">Exercise 1 - Basic Tags</a></li>
                 <li><a href="#" target="_blank">MDN Web Docs: HTML Basics</a></li>
@@ -54,7 +55,7 @@
 
             <!-- Subsection 2.1: Existing Comments -->
             <!-- TODO: Add a container (like a 'div') for the list of comments. -->
-            <div id="comment-list">
+            <div id="comments-container">
                 
                 <!-- Example Comment 1: -->
                 <!-- TODO: Use an 'article' for each comment. -->
@@ -83,8 +84,8 @@
                     <legend>Ask a Question or Leave a Reply</legend>
 
                     <!-- TODO: Add a 'label' and 'textarea' for the comment box. -->
-                    <label for="new-comment-text">Your Comment:</label>
-                    <textarea id="new-comment-text" name="new-comment-text" rows="4" placeholder="Type your question or comment here..." required></textarea>
+                    <label for="new-comment">Your Comment:</label>
+                    <textarea id="new-comment" name="new-comment" rows="4" placeholder="Type your question or comment here..." required></textarea>
                     
                     <!-- TODO: Add a 'button' to submit the comment. -->
                     <button type="submit">Post Comment</button>
@@ -96,7 +97,5 @@
 
     </main>
     <!-- End of main. -->
-         <script src="details.js"></script>
-
 </body>
 </html>
