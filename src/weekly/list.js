@@ -51,9 +51,9 @@ function createWeekArticle(week) {
 async function loadWeeks() {
   try {
     // 1. Fetch data from 'weeks.json'
-    const response = await fetch('../api/weeks.json')
+    const response = await fetch('api/weeks.json')
 
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
