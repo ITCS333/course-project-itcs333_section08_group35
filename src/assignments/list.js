@@ -26,6 +26,14 @@ async function loadAssignments() {
     // FIX: Fetch from the PHP API instead of the static JSON file
     const response = await fetch('api/index.php?resource=assignments');
     
+    // --- User Authentication ---
+    // Moved here because 'response' is defined here, and 'return' is valid inside a function.
+    if (response.status === 401) {
+        // User is not logged in. Redirect them to the login page.
+        window.location.href = "../auth/login.html"; 
+        return;
+    }
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

@@ -3,23 +3,28 @@
 # ITCS333 Course Page
 
 ## The names and student IDs of all team members.
-Ali Hasan Mohammed Hasan Alhayki 202307595
+## Team Members (Names & Student IDs)
 
-Mohammed Abdulla Hassan Alaswad  202310618
+| No. | Full Name                                   | Student ID |
+|:--:|----------------------------------------------|:----------:|
+| 1  | **Ali Hasan Mohammed Hasan Alhayki**         | 202307595  |
+| 2  | **Mohammed Abdulla Hassan Alaswad**          | 202310618  |
+| 3  | **Mohammed A. Aziz Almutawa**                | 202307580  |
+| 4  | **Ebrahim Mohammed Alfayoumi**               | 202307873  |
+| 5  | **Ahmed AbdulAmeer Ahmed Barakat**           | 202308929  |
 
-Mohammed A.Aziz Almutawa 202307580
-
-Ebrahim Mohammed alfayoumi 202307873
-
-Ahmed AbdulAmeer Ahmed Barakat 202308929
 ## A table indicating which student was responsible for which task.
-Task 4 - Ali Hasan Mohammed Hasan Alhayki
 
-Task 3 - Mohammed Abdulla Hassan AlAswad  
+| Task   | Student Name                                  |
+|--------|-----------------------------------------------|
+| Task 1 | Mohammed A. Aziz Almutawa                     |
+| Task 2 | Ahmed AbdulAmeer Ahmed Barakat                |
+| Task 3 | Mohammed Abdulla Hassan AlAswad               |
+| Task 4 | Ali Hasan Mohammed Hasan Alhayki              |
+| Task 5 | Ebrahim Mohammed Alfayoumi                    |
 
-Task 1 - Mohammed A.Aziz Almutawa
-
-Task 5 - Ebrahim Mohammed alfayoumi
-
-Task 2 - Ahmed AbdulAmeer Ahmed Barakat
 ## A link to your live, hosted application on Replit.
+
+### Last Update 17th-Dec-2025 4:00 PM
+[https://ef02846b-f498-43e6-acf8-6ee58e1beaf5-00-3a50h0d5tyl6o.sisko.replit.dev/
+](https://ef02846b-f498-43e6-acf8-6ee58e1beaf5-00-3a50h0d5tyl6o.sisko.replit.dev/auth/login.html)

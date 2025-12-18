@@ -16,7 +16,7 @@
     <!-- TODO: Add a 'title' for the page, e.g., "Admin Portal". -->
     <title>Admin Portal</title>
     <!-- TODO: Link to a CSS file or a CSS framework. -->
-    <link rel="stylesheet" href="adminStyle.css">
+    <link rel="stylesheet" href="../common/styles.css">
     <script src="manage_users.js" defer></script>
 </head>
 <body>
@@ -29,7 +29,8 @@
     <!-- End of the header. -->
 
     <!-- TODO: Create a 'main' element to hold the primary content of the portal. -->
-    <main>
+    <!-- Added class="container" to apply the white box styling -->
+    <main class="container">
         <!-- Section 1: Password Management -->
         <!-- TODO: Create a 'section' for the password management functionality. -->
             <!-- TODO: Add a sub-heading (e.g., 'h2') with the text "Change Your Password". -->
@@ -182,8 +183,10 @@
                         <td>12345</td>
                         <td>john.doe@example.com</td>
                         <td>
-                            <button>Edit</button>
-                            <button>Delete</button>
+                            <!-- Added class 'secondary' for Grey Edit styling -->
+                            <button class="secondary">Edit</button>
+                            <!-- Added class 'contrast' for Red Delete styling -->
+                            <button class="contrast">Delete</button>
                         </td>
                     </tr>
                     <tr>
@@ -191,8 +194,10 @@
                         <td>54321</td>
                         <td>doe.john@example.com</td>
                         <td>
-                            <button>Edit</button>
-                            <button>Delete</button>
+                            <!-- Added class 'secondary' for Grey Edit styling -->
+                            <button class="secondary">Edit</button>
+                            <!-- Added class 'contrast' for Red Delete styling -->
+                            <button class="contrast">Delete</button>
                         </td>
                     </tr>
                     <!-- TODO: Add another 'tr' for a second student as another example. -->
@@ -207,4 +212,3 @@
 
 </body>
 </html>
-

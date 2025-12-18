@@ -12,7 +12,7 @@
     
     <title>Topic Details</title>
 
-    <style>
+    <!-- <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -131,7 +131,10 @@
         button[type="submit"]:hover {
             background-color: #45a049;
         }
-    </style>
+    </style> -->
+    
+    <link rel="stylesheet" href="../common/styles.css">
+
 </head>
 <body>
     <header>
@@ -144,8 +147,10 @@
             <p>I can't get my items to space out evenly. I'm using `display: flex` but they are all bunched up. What am I missing?</p>
             <footer>Posted by: Student Name on 2025-10-25</footer>
             <div class="actions">
-                <a href="#">Edit</a>
-                <button>Delete</button>
+                <!-- Added role="button" and class="secondary" for the Grey Edit button styling -->
+                <a href="#" role="button" class="secondary">Edit</a>
+                <!-- Added class="contrast" for the Red Delete button styling -->
+                <button class="contrast">Delete</button>
             </div>
         </article>
 
@@ -157,8 +162,10 @@
                     <p>Have you tried using 'justify-content: space-between'?</p>
                     <footer>Posted by: Student Name on 2025-10-26</footer>
                     <div class="actions">
-                        <a href="#">Edit</a>
-                        <button>Delete</button>
+                        <!-- Added role="button" and class="secondary" -->
+                        <a href="#" role="button" class="secondary">Edit</a>
+                        <!-- Added class="contrast" -->
+                        <button class="contrast">Delete</button>
                     </div>
                 </article>
 
@@ -166,8 +173,10 @@
                     <p>You might also need to set a width on the flex container.</p>
                     <footer>Posted by: Student Name on 2025-10-27</footer>
                     <div class="actions">
-                        <a href="#">Edit</a>
-                        <button>Delete</button>
+                        <!-- Added role="button" and class="secondary" -->
+                        <a href="#" role="button" class="secondary">Edit</a>
+                        <!-- Added class="contrast" -->
+                        <button class="contrast">Delete</button>
                     </div>
                 </article>
             </div>

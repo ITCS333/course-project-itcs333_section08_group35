@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discussion Board</title>
-    <style>
+    <!-- <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -122,7 +122,10 @@
         .actions button {
             background-color: #f44336;
         }
-    </style>
+    </style> -->
+
+    <link rel="stylesheet" href="../common/styles.css">
+
 </head>
 <body>
 
@@ -162,8 +165,10 @@
                     </footer>
 
                     <div class="actions">
-                        <a href="#">Edit</a>
-                        <button>Delete</button>
+                        <!-- Updated to use 'secondary' class (Grey/Pencil) -->
+                        <a href="#" role="button" class="secondary">Edit</a>
+                        <!-- Updated to use 'contrast' class (Red/Trash) -->
+                        <button class="contrast">Delete</button>
                     </div>
                 </article>
 
@@ -175,8 +180,10 @@
                     </footer>
 
                     <div class="actions">
-                        <a href="#">Edit</a>
-                        <button>Delete</button>
+                        <!-- Updated to use 'secondary' class (Grey/Pencil) -->
+                        <a href="#" role="button" class="secondary">Edit</a>
+                        <!-- Updated to use 'contrast' class (Red/Trash) -->
+                        <button class="contrast">Delete</button>
                     </div>
                 </article>
 
@@ -188,16 +195,5 @@
                     </footer>
 
                     <div class="actions">
-                        <a href="#">Edit</a>
-                        <button>Delete</button>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-    </main>
-
-    <script src="board.js" defer></script>
-
-</body>
-</html>
+                        <!-- Updated to use 'secondary' class (Grey/Pencil) -->
+                        <a href="#" role="button" class="secondary
