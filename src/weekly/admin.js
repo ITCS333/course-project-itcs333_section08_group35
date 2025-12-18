@@ -5,10 +5,14 @@
 // --- Global Data Store ---
 // This will hold the weekly data loaded from the JSON file.
 let weeks = [];
+// Track which week we are currently editing (null if adding new)
+let editingId = null;
 
 // --- Element Selections ---
 const weekForm = document.querySelector('#week-form');
-const weeksTableBody = document.querySelector('#weeks-tbody');
+// Fixed: Selecting the tbody inside the weeks-table
+const weeksTableBody = document.querySelector('#weeks-table tbody');
+const submitBtn = document.querySelector('#add-week');
 
 // --- Functions ---
 
@@ -39,7 +43,6 @@ function createWeekRow(week) {
   editBtn.textContent = 'Edit';
   editBtn.classList.add('btn-edit'); // Matching class from HTML comments
   editBtn.dataset.id = week.id;
-  // (Optional) Add edit logic listener here or in global handler
   actionsTd.appendChild(editBtn);
 
   // Add spacing or a text node between buttons if desired
@@ -72,7 +75,7 @@ function renderTable() {
 }
 
 /**
- * Handles the form submission to add a new week.
+ * Handles the form submission to add or update a week.
  */
 function handleAddWeek(event) {
   // 1. Prevent default form submission (page reload)
@@ -87,18 +90,34 @@ function handleAddWeek(event) {
   // 3. Process links (split by newline)
   const linksArray = linksInput.value.split('\n').filter(link => link.trim() !== '');
 
-  // 4. Create new week object
-  // Note: We generate a pseudo-unique ID using Date.now()
-  const newWeek = {
-    id: `week_${Date.now()}`,
-    title: titleInput.value,
-    date: dateInput.value,
-    description: descInput.value,
-    links: linksArray
-  };
-
-  // 5. Add to global array
-  weeks.push(newWeek);
+  if (editingId) {
+    // UPDATE MODE
+    const index = weeks.findIndex(w => String(w.id) === String(editingId));
+    if (index !== -1) {
+      weeks[index] = {
+        ...weeks[index],
+        title: titleInput.value,
+        date: dateInput.value,
+        description: descInput.value,
+        links: linksArray
+      };
+    }
+    // Reset state
+    editingId = null;
+    submitBtn.textContent = "Add Week";
+  } else {
+    // ADD MODE
+    // 4. Create new week object
+    const newWeek = {
+      id: `week_${Date.now()}`,
+      title: titleInput.value,
+      date: dateInput.value,
+      description: descInput.value,
+      links: linksArray
+    };
+    // 5. Add to global array
+    weeks.push(newWeek);
+  }
 
   // 6. Refresh the table
   renderTable();
@@ -109,21 +128,40 @@ function handleAddWeek(event) {
 
 /**
  * Handles clicks within the table body (Event Delegation).
- * Specifically looks for the Delete button.
+ * Specifically looks for Delete and Edit buttons.
  */
 function handleTableClick(event) {
+  const target = event.target;
+  const id = target.dataset.id;
+
   // 1. Check if the clicked element is a delete button
-  if (event.target.classList.contains('btn-delete')) {
-    // 2. Get the ID from the data attribute
-    const idToDelete = event.target.dataset.id;
-    
-    // 3. Confirm deletion (optional, but good UX)
+  if (target.classList.contains('btn-delete')) {
+    // Confirm deletion
     if(confirm("Are you sure you want to delete this week?")) {
-        // 4. Filter out the week with the matching ID
-        weeks = weeks.filter(week => String(week.id) !== idToDelete);
-    
-        // 5. Refresh the table
+        // Filter out the week with the matching ID
+        weeks = weeks.filter(week => String(week.id) !== id);
         renderTable();
+    }
+  }
+
+  // 2. Check if the clicked element is an edit button
+  if (target.classList.contains('btn-edit')) {
+    const weekToEdit = weeks.find(week => String(week.id) === id);
+    if (weekToEdit) {
+      // Set Global editing state
+      editingId = id;
+      
+      // Populate Form
+      document.querySelector('#week-title').value = weekToEdit.title;
+      document.querySelector('#week-start-date').value = weekToEdit.date || '';
+      document.querySelector('#week-description').value = weekToEdit.description;
+      document.querySelector('#week-links').value = weekToEdit.links ? weekToEdit.links.join('\n') : '';
+      
+      // Change Button Text
+      submitBtn.textContent = "Update Week";
+      
+      // Scroll to form for better UX
+      weekForm.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }
@@ -147,14 +185,14 @@ async function loadAndInitialize() {
     // 3. Populate table
     renderTable();
 
-    // 4. Add Event Listeners
-    weekForm.addEventListener('submit', handleAddWeek);
-    weeksTableBody.addEventListener('click', handleTableClick);
-
   } catch (error) {
     console.error("Failed to load weekly data:", error);
     // Optional: Show an error message on the page
-    weeksTableBody.innerHTML = '<tr><td colspan="3">Error loading data. Please try again later.</td></tr>';
+    weeksTableBody.innerHTML = '<tr><td colspan="3">Error loading data. Showing local state.</td></tr>';
+  } finally {
+    // 4. Add Event Listeners (Moved here to ensure they attach regardless of fetch success)
+    weekForm.addEventListener('submit', handleAddWeek);
+    weeksTableBody.addEventListener('click', handleTableClick);
   }
 }
 
