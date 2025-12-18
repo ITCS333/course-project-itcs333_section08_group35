@@ -36,7 +36,7 @@ function renderWeekDetails(week) {
   
   // 2. Set Start Date
   // Note: Assuming the property is named 'date' based on the admin form logic
-  weekStartDate.textContent = "Starts on: " + week.date;
+  weekStartDate.textContent = "Starts on: " + (week.startDate || week.date);
   
   // 3. Set Description
   weekDescription.textContent = week.description;
