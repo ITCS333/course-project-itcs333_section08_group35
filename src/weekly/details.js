@@ -153,7 +153,7 @@ async function initializePage() {
     // 3. Fetch data (fetching both files in parallel)
     const [weeksResponse, commentsResponse] = await Promise.all([
         fetch('weeks.json'),
-        fetch('week-comments.json')
+        fetch('comments.json')
     ]);
 
     if (!weeksResponse.ok || !commentsResponse.ok) {
