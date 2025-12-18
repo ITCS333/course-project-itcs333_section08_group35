@@ -4,12 +4,12 @@
   Instructions:
   1. done Link this file to your HTML using a <script> tag with the 'defer' attribute.
      Example: <script src="login.js" defer></script> 
-  
+
   2.  done In your login.html, add a <div> element *after* the </fieldset> but
      *before* the </form> closing tag. Give it an id="message-container".
      This div will be used to display success or error messages.
      Example: <div id="message-container"></div>
-  
+
   3. Implement the JavaScript functionality as described in the TODO comments.
 */
 
@@ -96,12 +96,13 @@ function isValidPassword(password) {
  * - Call `displayMessage("Login successful!", "success")`.
  * - (Optional) Clear the email and password input fields.
  */
-function handleLogin(event) {
+async function handleLogin(event) {
   event.preventDefault();
-  
+
   let TrimedEmail = Email.value.trim();
   let TrimedPassword = Password.value.trim(); 
 
+  // Client-side Validation
   if (!isValidEmail(TrimedEmail)){
     displayMessage("Invalid email format.", "error");
     return;
@@ -112,11 +113,37 @@ function handleLogin(event) {
     return;
   }
 
-  displayMessage("Login successful!", "success");
+  // UPDATED: Now we send the valid data to the API
+  displayMessage("Logging in...", "success"); // Show status
 
-  Email.value = "";
-  Password.value ="";
-  // ... your implementation here ...
+  try {
+    const response = await fetch('api/index.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: TrimedEmail,
+            password: TrimedPassword
+        })
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        displayMessage(result.message, "success");
+        // Redirect to dashboard if provided by API
+        if (result.redirect) {
+            window.location.href = result.redirect;
+        }
+    } else {
+        displayMessage(result.message, "error");
+    }
+
+  } catch (error) {
+    console.error(error);
+    displayMessage("An error occurred connecting to the server.", "error");
+  }
 }
 
 /**
