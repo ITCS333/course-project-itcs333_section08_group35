@@ -4,7 +4,7 @@
 
 // --- Element Selections ---
 // Select the section for the week list.
-const listSection = document.querySelector('#week-list-section');
+const listSection = document.querySelector('#week-list');
 
 // --- Functions ---
 
